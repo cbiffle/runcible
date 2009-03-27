@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <stdio.h>
 #include "pdfview.h"
 
 int main(int argc, char *argv[])
