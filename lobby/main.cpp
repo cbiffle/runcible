@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   ChoiceView view;
   view.setWindowTitle("Lobby");
   view.setChoices(QList<Choice>()
-      << Choice("runcible-dir-list", QObject::tr("Browse"))
+      << Choice(QObject::tr("Browse"), "runcible-dir-list")
       );
 
   Spawner spawner;

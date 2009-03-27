@@ -14,7 +14,7 @@ class QGridLayout;
  */
 class Choice {
   public:
-    Choice(const QString &id, const QString &title);
+    Choice(const QString &title, const QString &id);
 
     const QString &id() const;
     const QString &title() const;

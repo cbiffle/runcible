@@ -30,7 +30,7 @@ void DirManager::refresh() {
   while (it.hasNext()) {
     it.next();
     if (it.fileName() != "." && it.fileName() != "..") {
-      choices << Choice(it.filePath(), it.fileName());
+      choices << Choice(it.fileName(), it.filePath());
     }
   }
 

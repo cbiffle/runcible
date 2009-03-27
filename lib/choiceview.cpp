@@ -4,7 +4,7 @@
 #include <QGridLayout>
 #include <QLabel>
 
-Choice::Choice(const QString &id, const QString &title)
+Choice::Choice(const QString &title, const QString &id)
     : _id(id), _title(title) { }
 
 const QString &Choice::id() const {
