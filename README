@@ -5,3 +5,6 @@ It provides only a userland UI, and must be run on top of a suitable Linux
 distribution (such as IPLinux).
 
 For instructions on building and running Runcible, see INSTALL.
+
+Runcible is available to you under the terms of the Apache License 2.0,
+which you can read in the COPYING file.
