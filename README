@@ -1,0 +1,7 @@
+=== Runcible ===
+
+Runcible is a software stack for eBook readers, intended for E-Ink devices.
+It provides only a userland UI, and must be run on top of a suitable Linux
+distribution (such as IPLinux).
+
+For instructions on building and running Runcible, see INSTALL.

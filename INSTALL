@@ -1,0 +1,20 @@
+=== Building Runcible ===
+
+You will need:
+- Qt 4.x (tested only on 4.5)
+- Poppler 0.10.x
+- Poppler/Qt4
+- the usual complement of build tools
+
+Do this:
+  qmake
+  make
+
+
+=== Running Runcible ===
+
+Runcible currently requires some environment settings.  We've packaged
+them into a script for you.  To run your binaries, execute
+  ./demo.sh
+
+
