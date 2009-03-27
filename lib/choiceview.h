@@ -14,13 +14,15 @@ class QGridLayout;
  */
 class Choice {
   public:
-    Choice(const QString &title, const QString &id);
+    Choice(const QString &title, const QString &id, const QStringList &params = QStringList());
 
     const QString &id() const;
     const QString &title() const;
+    const QStringList &params() const;
 
   private:
     QString _id, _title;
+    QStringList _params;
 };
 
 /*

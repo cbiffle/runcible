@@ -4,8 +4,8 @@
 #include <QGridLayout>
 #include <QLabel>
 
-Choice::Choice(const QString &title, const QString &id)
-    : _id(id), _title(title) { }
+Choice::Choice(const QString &title, const QString &id, const QStringList &params)
+    : _id(id), _title(title), _params(params) { }
 
 const QString &Choice::id() const {
   return _id;
@@ -13,6 +13,10 @@ const QString &Choice::id() const {
 
 const QString &Choice::title() const {
   return _title;
+}
+
+const QStringList &Choice::params() const {
+  return _params;
 }
 
 ChoiceView::ChoiceView(QWidget *parent)
