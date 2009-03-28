@@ -16,7 +16,7 @@ void DirManager::activate(const Choice choice) {
   if (fileInfo.isDir()) {
     QProcess::startDetached(QApplication::applicationFilePath(), QStringList() << path);
   } else {
-    QString viewer = "runcible-view-" + fileInfo.suffix();
+    QString viewer = "runcible-open-ext-" + fileInfo.suffix();
     if (!QProcess::startDetached(viewer, QStringList() << path)) {
       QApplication::beep();
       qDebug() << "Viewer not found.";
