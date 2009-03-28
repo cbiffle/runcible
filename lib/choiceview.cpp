@@ -72,12 +72,10 @@ void ChoiceView::keyPressEvent(QKeyEvent *event) {
 }
 
 void ChoiceView::choose(int chosen) {
-  qDebug() << _choices[chosen].id();
   emit choiceMade(_choices[chosen]);
 }
 
 void ChoiceView::goBack() {
-  qDebug() << "BACK";
   emit back();
 }
 
