@@ -129,24 +129,6 @@ bool PdfView::setDocument(const QString &path) {
   if (doc) {
     doc->setRenderHint(Poppler::Document::Antialiasing);
     doc->setRenderHint(Poppler::Document::TextAntialiasing);
-    QDomDocument *toc = doc->toc();
-    if (toc) {
-      QDomNode child = toc->documentElement();
-      while (!child.isNull()) {
-        if (child.isElement()) {
-          QDomElement el = child.toElement();
-          QString destName = el.attribute("DestinationName", "");
-          Poppler::LinkDestination *dest = doc->linkDestination(destName);
-          qDebug() << "Link " << el.nodeName() << " on page " << dest->pageNumber();
-          delete dest;
-        }
-        qDebug() << child.nodeName();
-        child = child.nextSibling();
-      }
-      delete toc;
-    } else {
-      qDebug() << "NO TOC";
-    }
     showPage(0);
   }
 
