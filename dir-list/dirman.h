@@ -2,6 +2,7 @@
 #define DIRMAN_H
 
 #include <choiceview.h>
+#include <coord_client.h>
 
 /*
  * Manages the contents of a directory, cooperating with
@@ -23,6 +24,7 @@ signals:
 
 private:
   QString _basePath;
+  CoordinatorClient _coordinator;
 
 };
 
