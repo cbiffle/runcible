@@ -17,7 +17,7 @@ static void copyToc(const QUrl &docUrl, Poppler::Document *doc, QDomNode node,
       if (!destName.isNull()) {
         Poppler::LinkDestination *dest = doc->linkDestination(destName);
         QUrl refUrl(docUrl);
-        refUrl.setFragment("page:" + QString::number(dest->pageNumber()));
+        refUrl.setFragment("page:" + QString::number(dest->pageNumber() - 1));
         delete dest;
        
         QString displayName(QString(indent * 2, ' ') + el.nodeName());
