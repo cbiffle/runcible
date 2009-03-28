@@ -5,6 +5,7 @@
 #include <QString>
 #include <QList>
 #include <choiceview.h>
+#include <coord_client.h>
 
 class TocManager : public QObject {
   Q_OBJECT
@@ -22,6 +23,7 @@ signals:
 
 private:
   QString _path;
+  CoordinatorClient _coordinator;
 };
 
 #endif // TOCMAN_H

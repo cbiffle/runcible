@@ -3,7 +3,8 @@
 
 TocManager::TocManager(const QString &path, QObject *parent)
     : QObject(parent),
-      _path(path) { }
+      _path(path),
+      _coordinator(path, this) { }
 
 TocManager::~TocManager() { }
 
@@ -20,7 +21,8 @@ void TocManager::refresh() {
           QDomElement el = child.toElement();
           QString destName = el.attribute("DestinationName", "");
           Poppler::LinkDestination *dest = doc->linkDestination(destName);
-          choices << Choice(el.nodeName(), QString::number(dest->pageNumber()));
+          QUrl url("file:" + _path + "#page:" + QString::number(dest->pageNumber()));
+          choices << Choice(el.nodeName(), url.toString());
           delete dest;
         }
         child = child.nextSibling();
@@ -37,5 +39,5 @@ void TocManager::refresh() {
 }
 
 void TocManager::activate(Choice c) {
-  qDebug() << c.id();
+  _coordinator.openItem("runcible-view-pdf", QUrl(c.id()));
 }
