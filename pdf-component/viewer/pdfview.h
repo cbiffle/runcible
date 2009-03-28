@@ -36,13 +36,13 @@ public slots:
   bool setDocument(const QString &path);
   void zoomIn();
   void zoomOut();
+  void showPage(int);
   
 signals:
   void pageChanged(int);
   void back();
 
 private:
-  void showPage(int);
   ScalingStrategy *scaler();
 
   Poppler::Document *doc;

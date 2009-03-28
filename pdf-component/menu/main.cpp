@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
   ChoiceView view;
   view.setChoices(QList<Choice>()
-      << Choice(QObject::tr("Read"), "runcible-view-pdf", QStringList() << file)
+      << Choice(QObject::tr("Read"), "runcible-view-pdf", QStringList() << ("file:" + file))
       << Choice(QObject::tr("Table of Contents"), "runcible-contents-pdf", QStringList() << file)
       );
 

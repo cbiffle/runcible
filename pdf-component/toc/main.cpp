@@ -6,16 +6,16 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   if (argc != 2) {
-    fprintf(stderr, "Usage: runcible-contents-pdf <file>");
+    fprintf(stderr, "Usage: runcible-contents-pdf <file:url>");
     return -1;
   }
 
-  QString path(argv[1]);
+  QUrl url(argv[1]);
 
-  TocManager tocman(path);
+  TocManager tocman(url.path());
   ChoiceView view;
 
-  view.setWindowTitle("Contents of " + QFileInfo(path).fileName());
+  view.setWindowTitle("Contents of " + QFileInfo(url.path()).fileName());
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &tocman, SLOT(activate(Choice)));
