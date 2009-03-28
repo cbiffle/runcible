@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = viewer menu
+SUBDIRS = viewer menu toc
