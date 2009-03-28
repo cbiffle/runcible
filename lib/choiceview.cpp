@@ -26,10 +26,11 @@ ChoiceView::ChoiceView(QWidget *parent)
 
   _layout->setColumnStretch(0, 1);
 
+  QFont labelFont("sans", 20);
+
   for (int i = 0; i < NUM_CHOICES; i++) {
-    QLabel *label = new QLabel("HI");
-    label->setFont(QFont("sans", 20));
-    label->setMaximumWidth(16777215);
+    QLabel *label = new QLabel("");
+    label->setFont(labelFont);
     _layout->addWidget(label, i, 0);
     _labels << label;
 
@@ -104,9 +105,13 @@ void ChoiceView::pageUp() {
 
 void ChoiceView::refreshLabels() {
   int cs = _choices.size();
+  QFontMetrics metrics(_labels[0]->font());
+
   for (int i = 0; i < NUM_CHOICES; i++) {
     if (i + _offset < cs) {
-      _labels[i]->setText(_choices[i + _offset].title());
+      const QString &title = _choices[i + _offset].title();
+      QString elided(metrics.elidedText(title, Qt::ElideMiddle, _labels[i]->width()));
+      _labels[i]->setText(elided);
       _hotkeys[i]->show();
     } else {
       _labels[i]->setText("");
