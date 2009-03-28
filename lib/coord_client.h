@@ -3,6 +3,10 @@
 
 #include <QtCore>
 
+/*
+ * A client for the Runcible Coordinator, which dispatches requests
+ * across components.
+ */
 class CoordinatorClient : public QObject {
   Q_OBJECT
 
