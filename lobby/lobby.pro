@@ -1,5 +1,9 @@
+include( ../common.pri )
+
 HEADERS       =
 SOURCES       = main.cpp
 INCLUDEPATH += ../lib
-LIBS += ../lib/libruncible.so
+LIBS += ../bin/libruncible.so
+
 TARGET=runcible-lobby
+DESTDIR=../bin
