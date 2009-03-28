@@ -10,17 +10,18 @@ int main(int argc, char *argv[]) {
 
   QSettings settings("runcible", "lobby");
   QString browsePath = settings.value("browse-path", "/home").toString();
+  QUrl browseUrl("file:" + browsePath);
 
   ChoiceView view;
   view.setWindowTitle("Lobby");
   view.setChoices(QList<Choice>()
-      << Choice(QObject::tr("Browse"), "runcible-dir-list", QStringList() << browsePath)
+      << Choice(QObject::tr("Browse"), browseUrl.toString())
       );
 
   Spawner spawner;
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
-  QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(runChoice(Choice)));
+  QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(openId(Choice)));
 
   view.showMaximized();
 

@@ -14,6 +14,7 @@ public:
   CoordinatorClient(const QString &clientName, QObject *parent = 0);
   virtual ~CoordinatorClient();
 
+public slots:
   void openItem(QUrl);
 };
 
