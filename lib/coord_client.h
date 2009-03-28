@@ -16,6 +16,7 @@ public:
 
 public slots:
   void openItem(QUrl);
+  void openItem(QString program, QUrl);
 };
 
 #endif // COORD_CLIENT_H

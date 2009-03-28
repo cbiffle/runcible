@@ -6,8 +6,6 @@ CoordinatorClient::CoordinatorClient(const QString &, QObject *parent)
 CoordinatorClient::~CoordinatorClient() { }
 
 void CoordinatorClient::openItem(QUrl item) {
-  // TODO(cbiffle): this is stubbed out to avoid using COP.
-  
   if (item.scheme() == "file") {
     QFileInfo fileInfo(item.path());
     QString binary;
@@ -20,4 +18,9 @@ void CoordinatorClient::openItem(QUrl item) {
   } else {
     qDebug() << "Cannot open non-file item " << item;
   }
+}
+
+void CoordinatorClient::openItem(QString program, QUrl item) {
+  // TODO(cbiffle): this is stubbed out to avoid using COP.
+  QProcess::startDetached(program, QStringList() << item.toString());
 }
