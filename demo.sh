@@ -1,3 +1,3 @@
 #!/bin/sh
 
-LD_LIBRARY_PATH=./bin PATH=${PATH}:./bin runcible-lobby
+LD_LIBRARY_PATH=./bin:${LD_LIBRARY_PATH} PATH=${PATH}:./bin runcible-lobby $*
