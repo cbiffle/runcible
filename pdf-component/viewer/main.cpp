@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 
   QObject::connect(&widget, SIGNAL(back()), &app, SLOT(quit()));
 
+  widget.setWindowFlags(Qt::FramelessWindowHint);
   widget.showMaximized();
   return app.exec();
 }
