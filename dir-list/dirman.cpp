@@ -25,5 +25,7 @@ void DirManager::refresh() {
     }
   }
 
+  qSort(choices);
+
   emit contentsChanged(choices);
 }
