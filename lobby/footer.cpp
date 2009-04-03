@@ -12,8 +12,6 @@ FooterState::FooterState()
 }
 
 Footer::Footer(QWidget *parent) : QWidget(parent) {
-  setMaximumHeight(26);
-
   QGridLayout *layout = new QGridLayout(this);
   layout->setSpacing(2);
   layout->setContentsMargins(1,1,1,1);
