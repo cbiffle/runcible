@@ -37,8 +37,7 @@ ChoiceView::ChoiceView(QWidget *parent)
     QLabel *hotkey = new QLabel(QString::number((i + 1) % 10));
     hotkey->setFont(QFont("sans", 20, QFont::Bold));
     hotkey->setFrameShape(QFrame::Box);
-    hotkey->setFrameShadow(QFrame::Raised);
-    hotkey->setLineWidth(3);
+    hotkey->setLineWidth(1);
     _layout->addWidget(hotkey, i, 1);
     _hotkeys << hotkey;
   }
@@ -118,4 +117,8 @@ void ChoiceView::refreshLabels() {
       _hotkeys[i]->hide();
     }
   }
+}
+
+bool operator<(Choice a, Choice b) {
+  return a.title().compare(b.title(), Qt::CaseInsensitive) < 0;
 }

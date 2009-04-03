@@ -25,6 +25,8 @@ class Choice {
     QStringList _params;
 };
 
+bool operator<(Choice a, Choice b);
+
 /*
  * A specialized view that presents a menu of ten Choice items
  * at a time.  Items can be selected using 0-9, or paged through
