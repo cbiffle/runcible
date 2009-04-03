@@ -1,8 +1,6 @@
 #include <QApplication>
 #include <QSettings>
-#include <QLabel>
 #include <QWSServer>
-#include <QProgressBar>
 #include "choiceview.h"
 #include "spawner.h"
 #include "footer.h"
