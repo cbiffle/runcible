@@ -15,13 +15,14 @@ int main(int argc, char *argv[]) {
   DirManager dirman(path);
   ChoiceView view;
 
-  view.setWindowTitle("Contents of " + QFileInfo(path).fileName());
+  view.setWindowFlags(Qt::FramelessWindowHint);
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &dirman, SLOT(activate(Choice)));
   QObject::connect(&dirman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
 
   dirman.refresh();
+  view.setWindowTitle(path);
   view.showMaximized();
 
   return app.exec();
