@@ -1,3 +1,4 @@
+QT += xml
 CONFIG += link_pkgconfig
 HEADERS = tocman.h
 SOURCES = main.cpp tocman.cpp
