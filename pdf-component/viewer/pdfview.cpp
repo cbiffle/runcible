@@ -106,9 +106,15 @@ void PdfView::showPage(int newPage) {
   Poppler::Page *page = doc->page(newPage);
   QImage image = scaler()->scaleAndRender(page, this);
 
+  setPixmap(QPixmap::fromImage(image));
+}
+
+void PdfView::paintEvent(QPaintEvent *event) {
+  QLabel::paintEvent(event);
+
   if (pageIndexEntry > 0) {
     QPainter painter;
-    painter.begin(&image);
+    painter.begin(this);
     QFont font("Arial", 72);
     painter.setFont(font);
     painter.drawText(0, 200, "Goto page:");
@@ -116,8 +122,6 @@ void PdfView::showPage(int newPage) {
 
     painter.end();
   }
-
-  setPixmap(QPixmap::fromImage(image));
 }
 
 bool PdfView::setDocument(const QString &path) {
@@ -146,7 +150,7 @@ void PdfView::keyPressEvent(QKeyEvent *event) {
     zoomOut();
   } else if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9) {
     pageIndexEntry = (pageIndexEntry * 10) + (event->key() - Qt::Key_0);
-    showPage(pageIndex);
+    update();
   } else if (event->key() == Qt::Key_Escape) {
     emit back();
   } else if (event->key() == Qt::Key_Return && pageIndexEntry > 0) {

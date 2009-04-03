@@ -29,8 +29,10 @@ public:
 
   Poppler::Document *document();
 
-  void keyPressEvent(QKeyEvent *event);
-  void resizeEvent(QResizeEvent *event);
+  virtual void keyPressEvent(QKeyEvent *event);
+  virtual void resizeEvent(QResizeEvent *event);
+
+  virtual void paintEvent(QPaintEvent *event);
 
 public slots:
   bool setDocument(const QString &path);
