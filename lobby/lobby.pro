@@ -1,7 +1,7 @@
 include( ../common.pri )
 
-HEADERS       =
-SOURCES       = main.cpp
+HEADERS       =  footer.h
+SOURCES       = main.cpp footer.cpp
 INCLUDEPATH += ../lib
 LIBS += ../bin/libruncible.so
 
