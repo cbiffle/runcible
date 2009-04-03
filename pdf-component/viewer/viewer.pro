@@ -1,3 +1,4 @@
+QT += xml
 CONFIG += link_pkgconfig
 HEADERS = pdfview.h 
 SOURCES = pdfview.cpp main.cpp
