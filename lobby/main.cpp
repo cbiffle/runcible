@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
   statusBar.show();
 
   RWindow window;
+  window.showMessage("Lobby");
 
   ChoiceView view(&window);
   window.layout()->addWidget(&view);
