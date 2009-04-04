@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QUrl>
+#include <QLayout>
 #include <stdio.h>
+#include <rwindow.h>
 #include "pdfview.h"
 
 int main(int argc, char *argv[])
@@ -14,7 +16,13 @@ int main(int argc, char *argv[])
 
   QUrl path(argv[1]);
 
+  RWindow window;
+
   PdfView widget;
+  QObject::connect(&widget, SIGNAL(morePages(int)), &window, SLOT(showTimeline(int)));
+  QObject::connect(&widget, SIGNAL(pageChanged(int)), &window, SLOT(updateTimeline(int)));
+  window.layout()->addWidget(&widget);
+
   widget.setDocument(path.path());
   if (path.hasFragment()) {
     QString fragment = path.fragment();
@@ -25,7 +33,6 @@ int main(int argc, char *argv[])
 
   QObject::connect(&widget, SIGNAL(back()), &app, SLOT(quit()));
 
-  widget.setWindowFlags(Qt::FramelessWindowHint);
-  widget.showMaximized();
+  window.showMaximized();
   return app.exec();
 }
