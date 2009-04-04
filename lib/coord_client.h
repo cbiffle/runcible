@@ -11,12 +11,18 @@ class CoordinatorClient : public QObject {
   Q_OBJECT
 
 public:
-  CoordinatorClient(const QString &clientName, QObject *parent = 0);
+  CoordinatorClient(const QString &clientName = QString(), QObject *parent = 0);
   virtual ~CoordinatorClient();
 
 public slots:
   void openItem(QUrl);
   void openItem(QString program, QUrl);
+
+  void showMessage(const QString &);
+  
+  void showTimeline(int max);
+  void updateTimeline(int pos);
+  void hideTimeline();
 };
 
 #endif // COORD_CLIENT_H
