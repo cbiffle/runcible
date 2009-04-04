@@ -13,8 +13,8 @@ FooterState::FooterState()
 
 Footer::Footer(QWidget *parent)
     : QWidget(parent),
-      _currentWinId(0),
       _updateScheduled(false),
+      _currentWinId(0),
       _qcop("runcible/footer", this) {
 
   QGridLayout *layout = new QGridLayout(this);
@@ -29,7 +29,7 @@ Footer::Footer(QWidget *parent)
 
   _message = new QLabel();
   _message->setMaximumHeight(20);
-  _message->setFont(QFont("Liberation Serif", 13, QFont::Black));
+  _message->setFont(QFont("Liberation Serif", 6, QFont::Black));
 
   layout->addWidget(_message, 0, 0);
   layout->addWidget(_progBar, 0, 1);
