@@ -5,7 +5,8 @@
 #include <QLabel>
 
 Choice::Choice(const QString &title, const QString &id, const QStringList &params)
-    : _id(id), _title(title), _params(params) { }
+    : _id(id), _title(title), _params(params) {
+}
 
 const QString &Choice::id() const {
   return _id;
@@ -23,6 +24,8 @@ ChoiceView::ChoiceView(QWidget *parent)
     : QWidget(parent),
       _layout(new QGridLayout),
       _offset(0) {
+
+  setFocusPolicy(Qt::StrongFocus);
 
   _layout->setColumnStretch(0, 1);
 
