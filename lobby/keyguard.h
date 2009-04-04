@@ -1,10 +1,10 @@
 #ifndef KEYGUARD_H
 #define KEYGUARD_H
 
-#include <QLabel>
+#include <rwindow.h>
 class QKeyEvent;
 
-class KeyGuard : public QLabel {
+class KeyGuard : public RWindow {
   Q_OBJECT
 
 public:

@@ -2,13 +2,17 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QPixmap>
+#include <QLayout>
 
-KeyGuard::KeyGuard(QWidget *parent) : QLabel(parent) {
-  setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-  setWindowTitle("Keyboard Locked - Press Power");
-  setPixmap(QPixmap("/usr/local/runcible-startup-4.png"));
+KeyGuard::KeyGuard(QWidget *parent) : RWindow(parent, Qt::WindowStaysOnTopHint) {
+  showMessage("Keyboard Locked - Press Power");
+  
+  QLabel *pixmap = new QLabel;
+  pixmap->setPixmap(QPixmap("/usr/local/runcible-startup-4.png"));
+  layout()->addWidget(pixmap);
 }
 KeyGuard::~KeyGuard() { }
 
 void KeyGuard::keyPressEvent(QKeyEvent *event) {
+  // nom nom nom
 }
