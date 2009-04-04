@@ -5,7 +5,7 @@
 
 FooterState::FooterState()
     : timelineVisible(false),
-      timelineMax(0),
+      timelineMax(1),
       timelinePos(0),
       message()
 {
@@ -58,9 +58,14 @@ FooterState &Footer::state(int winId) {
 
 void Footer::showTimeline(int winId, int max) {
   FooterState &s = state(winId);
-  s.timelineMax = max;
+  if (max == 0) {
+    s.timelineMax = 1;
+    s.timelineVisible = false;
+  } else {
+    s.timelineMax = max;
+    s.timelineVisible = true;
+  }
   s.timelinePos = 0;
-  s.timelineVisible = true;
   updateState(winId);
 }
 
@@ -92,7 +97,7 @@ void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
 
     case QWSServer::Active:
       _currentWinId = window->winId();
-      QTimer::singleShot(250, this, SLOT(updateState()));
+      QTimer::singleShot(500, this, SLOT(updateState()));
       break;
 
     case QWSServer::Destroy:
@@ -111,10 +116,18 @@ void Footer::updateState(int winId) {
   if (winId != _currentWinId) return;
 
   const FooterState &s = state(winId);
-  if (s.message != _message->text()) _message->setText(s.message);
-  if (s.timelineMax != _progBar->maximum()) _progBar->setMaximum(s.timelineMax);
-  if (s.timelinePos != _progBar->value()) _progBar->setValue(s.timelinePos);
-  if (s.timelineVisible != _progBar->isVisible()) _progBar->setVisible(s.timelineVisible);
+  if (s.message != _message->text()) {
+    _message->setText(s.message);
+  }
+  if (s.timelineMax != _progBar->maximum()) {
+    _progBar->setMaximum(s.timelineMax);
+  }
+  if (s.timelinePos != _progBar->value()) {
+    _progBar->setValue(s.timelinePos);
+  }
+  if (s.timelineVisible != _progBar->isVisible()) {
+    _progBar->setVisible(s.timelineVisible);
+  }
 }
 
 void Footer::received(const QString &message, const QByteArray &data) {
