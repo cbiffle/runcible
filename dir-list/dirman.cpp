@@ -21,7 +21,11 @@ void DirManager::refresh() {
   while (it.hasNext()) {
     it.next();
     if (it.fileName() != "." && it.fileName() != "..") {
-      choices << Choice(it.fileName(), "file:" + it.filePath());
+      QString displayName(it.fileName());
+      if (it.fileInfo().isDir()) {
+        displayName += "/";
+      }
+      choices << Choice(displayName, "file:" + it.filePath());
     }
   }
 
