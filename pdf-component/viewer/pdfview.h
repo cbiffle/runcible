@@ -42,6 +42,7 @@ public slots:
   
 signals:
   void pageChanged(int);
+  void morePages(int);
   void back();
 
 private:

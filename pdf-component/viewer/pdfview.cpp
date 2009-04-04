@@ -56,6 +56,8 @@ PdfView::PdfView(QWidget *parent)
 
   scalingStrategies << new FitPageScaler() << new TextScaler();
   scalerIndex = 0;
+
+  setFocusPolicy(Qt::StrongFocus);
 }
 
 PdfView::~PdfView() {
@@ -146,6 +148,7 @@ bool PdfView::setDocument(const QString &path) {
   if (doc) {
     doc->setRenderHint(Poppler::Document::Antialiasing);
     doc->setRenderHint(Poppler::Document::TextAntialiasing);
+    emit morePages(doc->numPages());
     showPage(0);
   }
 
