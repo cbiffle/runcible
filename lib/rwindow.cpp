@@ -2,6 +2,7 @@
 
 #include <QtGui>
 #include <QCopChannel>
+#include <QKeyEvent>
 
 #define C_FOOTER "runcible/footer"
 
@@ -42,4 +43,12 @@ void RWindow::hideTimeline() {
   QDataStream out(&data, QIODevice::WriteOnly);
   out << (int) winId();
   QCopChannel::send(C_FOOTER, "hideTimeline(int)", data);
+}
+
+void RWindow::keyPressEvent(QKeyEvent *event) {
+  if (event->key() == Qt::Key_Escape) {
+    emit back();
+  } else {
+    QWidget::keyPressEvent(event);
+  }
 }

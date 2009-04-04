@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class QKeyEvent;
+
 class RWindow : public QWidget {
   Q_OBJECT
 
@@ -17,6 +19,12 @@ public slots:
   void showTimeline(int max);
   void updateTimeline(int pos);
   void hideTimeline();
+
+signals:
+  void back();
+
+protected:
+  virtual void keyPressEvent(QKeyEvent *);
 };
 
 #endif // RWINDOW_H
