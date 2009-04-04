@@ -1,8 +1,8 @@
 #include "choiceview.h"
 
 #include <QKeyEvent>
-#include <QGridLayout>
-#include <QLabel>
+#include <QPaintEvent>
+#include <QPainter>
 
 Choice::Choice(const QString &title, const QString &id, const QStringList &params)
     : _id(id), _title(title), _params(params) {
@@ -22,37 +22,70 @@ const QStringList &Choice::params() const {
 
 ChoiceView::ChoiceView(QWidget *parent)
     : QWidget(parent),
-      _layout(new QGridLayout),
       _offset(0) {
 
   setFocusPolicy(Qt::StrongFocus);
-
-  _layout->setColumnStretch(0, 1);
-
-  QFont labelFont("Liberation Serif", 20);
-
-  setUpdatesEnabled(false);
-  for (int i = 0; i < NUM_CHOICES; i++) {
-    QLabel *label = new QLabel("");
-    label->setFont(labelFont);
-    _layout->addWidget(label, i, 0);
-    _labels << label;
-
-    QLabel *hotkey = new QLabel(QString::number((i + 1) % 10));
-    hotkey->setFont(QFont("Liberation Serif", 20, QFont::Bold));
-    hotkey->setFrameShape(QFrame::Box);
-    hotkey->setLineWidth(1);
-    _layout->addWidget(hotkey, i, 1);
-    _hotkeys << hotkey;
-  }
-  setLayout(_layout);
-  setUpdatesEnabled(true);
+  setFont(QFont("Liberation Serif", 20));
 }
 
-ChoiceView::~ChoiceView() {
-  delete _layout;
-  qDeleteAll(_labels);
-  qDeleteAll(_hotkeys);
+ChoiceView::~ChoiceView() { }
+
+static const int arrowHeight = 8;
+
+static char _hotkeys[] = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+void ChoiceView::paintEvent(QPaintEvent *event) {
+  QFontMetrics metrics(font());
+  QPainter painter(this);
+
+  int y = arrowHeight + 2;
+  const int baseline = metrics.leading() + metrics.ascent() + 1;
+  const int w = width(), h = height() - (y * 2);
+  const int yInc = h / 10;
+  const int labelWidth = w - yInc - 10;
+  const int hotkeyCenter = w - (yInc / 2);
+
+  // Top arrow
+  const int center = w / 2;
+  painter.eraseRect(0, 0, w, y);
+  if (_offset > 0) {
+    painter.drawLine(center, 0, center - arrowHeight, arrowHeight);
+    painter.drawLine(center, 0, center + arrowHeight, arrowHeight);
+    painter.drawLine(center - arrowHeight, arrowHeight, center + arrowHeight, arrowHeight);
+  }
+  
+  // Bottom arrow
+  painter.eraseRect(0, height() - y, w, y);
+  if (_offset + 10 < _choices.size()) {
+    painter.drawLine(center, height() - 1, center - arrowHeight, height() - arrowHeight - 1);
+    painter.drawLine(center, height() - 1, center + arrowHeight, height() - arrowHeight - 1);
+    painter.drawLine(center - arrowHeight, height() - arrowHeight - 1,
+        center + arrowHeight, height() - arrowHeight - 1);
+  }
+ 
+  // Choice area
+  for (int row = 0; row < NUM_CHOICES; row++) {
+    const int item = row + _offset;
+    painter.eraseRect(0, y, w, yInc);
+    if (item < _choices.size()) {
+      const Choice &c = _choices[item];
+      painter.drawText(0, y + baseline,
+          metrics.elidedText(c.title(), Qt::ElideMiddle, labelWidth));
+
+      painter.save();
+      if (row > 0) {
+        painter.setPen(QColor(0xAA, 0xAA, 0xAA));
+        painter.drawLine(50, y - 10, w - 50, y - 10);
+      }
+
+      painter.setPen(QColor(0x55, 0x55, 0x55));
+      painter.drawRect(labelWidth + 10, y + metrics.leading(), yInc - 1, metrics.height());
+      painter.drawText(hotkeyCenter - (metrics.width(_hotkeys[row]) / 2), y + baseline,
+          QString(1, _hotkeys[row]));
+
+      painter.restore();
+    }
+    y += yInc;
+  }
 }
 
 void ChoiceView::keyPressEvent(QKeyEvent *event) {
@@ -109,24 +142,8 @@ void ChoiceView::pageUp() {
 }
 
 void ChoiceView::refreshLabels() {
-  setUpdatesEnabled(false);
-  int cs = _choices.size();
-  QFontMetrics metrics(_labels[0]->font());
-
-  for (int i = 0; i < NUM_CHOICES; i++) {
-    if (i + _offset < cs) {
-      const QString &title = _choices[i + _offset].title();
-      QString elided(metrics.elidedText(title, Qt::ElideMiddle, _labels[i]->width()));
-      _labels[i]->setText(elided);
-      _hotkeys[i]->show();
-    } else {
-      _labels[i]->setText("");
-      _hotkeys[i]->hide();
-    }
-  }
-
+  update();
   emit switchedToPage(_offset / 10);
-  setUpdatesEnabled(true);
 }
 
 bool operator<(Choice a, Choice b) {

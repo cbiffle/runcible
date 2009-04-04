@@ -5,8 +5,7 @@
 #include <QWidget>
 
 class QKeyEvent;
-class QLabel;
-class QGridLayout;
+class QPaintEvent;
 
 #define NUM_CHOICES 10
 /*
@@ -55,13 +54,13 @@ signals:
   void choiceMade(const Choice);
   void back();
 
+protected:
+  virtual void paintEvent(QPaintEvent *event);
+
 private:
   void refreshLabels();
 
   QList<Choice> _choices;
-  QGridLayout *_layout;
-  QList<QLabel *> _labels;
-  QList<QLabel *> _hotkeys;
   int _offset;
 };
 
