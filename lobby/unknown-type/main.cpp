@@ -2,6 +2,7 @@
 #include <QBoxLayout>
 #include <QLabel>
 #include <rwindow.h>
+#include <runcible-util.h>
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
@@ -20,7 +21,9 @@ int main(int argc, char *argv[]) {
 
   layout->addStrut(8);
 
-  QLabel detail(QString("The file `%1' is of an unrecognized type and cannot be opened.").arg(filename));
+  QLabel detail(
+    QString("The file %1 is of an unrecognized type and cannot be opened.")
+        .arg(runcible::quote(filename)));
   detail.setFont(QFont("Liberation Serif", 12));
   detail.setWordWrap(true);
   layout->addWidget(&detail);
