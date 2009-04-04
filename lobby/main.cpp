@@ -4,13 +4,40 @@
 #include "choiceview.h"
 #include "spawner.h"
 #include "footer.h"
+#include "keyguard.h"
 #include "coord-server.h"
 
+class GuardHandler : public QWSServer::KeyboardFilter {
+public:
+  KeyGuard *guard;
+  GuardHandler() {
+    guard = new KeyGuard();
+  }
+  virtual ~GuardHandler() {
+    delete guard;
+  }
+  virtual bool filter(int unicode, int keycode, int modifiers, bool isPress, bool autoRepeat) {
+    if (keycode == Qt::Key_Standby && isPress && !autoRepeat) {
+      if (guard->isVisible()) {
+        guard->hide();
+      } else {
+        guard->showMaximized();
+      }
+      return true;
+    }
+    return false;
+  };
+
+  
+};
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   CoordinatorServer server;
+  GuardHandler filter;
+  QWSServer::addKeyboardFilter(&filter);
   QRect max(0, 0, 600, 800 - 26);
   QWSServer::setMaxWindowRect(max);
+
 //  app.setStyleSheet("ChoiceView { background: white }");
 
   QSettings settings("runcible", "lobby");
@@ -25,7 +52,6 @@ int main(int argc, char *argv[]) {
   statusBar.show();
 
   ChoiceView view;
-  view.setWindowFlags(Qt::FramelessWindowHint);
   view.setChoices(QList<Choice>()
       << Choice(QObject::tr("Browse"), browseUrl.toString())
       );
