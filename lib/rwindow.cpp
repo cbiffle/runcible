@@ -6,7 +6,9 @@
 #define C_FOOTER "runcible/footer"
 
 RWindow::RWindow(QWidget *parent, Qt::WindowFlags f)
-    : QWidget(parent, f | Qt::FramelessWindowHint) { }
+    : QWidget(parent, f | Qt::FramelessWindowHint) {
+  setLayout(new QVBoxLayout(this));
+}
 
 RWindow::~RWindow() { }
 

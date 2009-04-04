@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QWSServer>
+#include <rwindow.h>
 #include "choiceview.h"
 #include "spawner.h"
 #include "footer.h"
@@ -33,8 +34,10 @@ public:
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   CoordinatorServer server;
+
   GuardHandler filter;
   QWSServer::addKeyboardFilter(&filter);
+
   QRect max(0, 0, 600, 800 - 26);
   QWSServer::setMaxWindowRect(max);
 
@@ -51,7 +54,10 @@ int main(int argc, char *argv[]) {
 
   statusBar.show();
 
-  ChoiceView view;
+  RWindow window;
+
+  ChoiceView view(&window);
+  window.layout()->addWidget(&view);
   view.setChoices(QList<Choice>()
       << Choice(QObject::tr("Browse"), browseUrl.toString())
       );
@@ -60,12 +66,12 @@ int main(int argc, char *argv[]) {
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(openId(Choice)));
+
   QObject::connect(QWSServer::instance(), SIGNAL(windowEvent(QWSWindow *, QWSServer::WindowEvent)),
       &statusBar, SLOT(windowEvent(QWSWindow *, QWSServer::WindowEvent)));
 
-  view.setWindowTitle("Lobby");
-  view.setWindowFlags(Qt::FramelessWindowHint);
-  view.showMaximized();
+  window.setWindowTitle("Lobby");
+  window.showMaximized();
 
   return app.exec();
 }
