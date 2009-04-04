@@ -1,10 +1,12 @@
 #ifndef FOOTER_H
 #define FOOTER_H
 
+#include <QtCore>
 #include <QWidget>
 #include <QWSWindow>
 #include <QProgressBar>
 #include <QLabel>
+#include <QCopChannel>
 
 class FooterState {
 public:
@@ -37,6 +39,8 @@ public slots:
 
   void updateState();
 
+  void received(const QString &message, const QByteArray &data);
+
 private:
   FooterState &state();
 
@@ -45,6 +49,10 @@ private:
   QWSWindow *_currentWindow;
 
   FooterState _default;
+
+  QHash<QWSWindow *, FooterState> _windowStates;
+
+  QCopChannel _qcop;
 
 };
 
