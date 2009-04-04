@@ -43,7 +43,8 @@ public slots:
 
 private:
   FooterState &state(int winId = -1);
-  void updateState(int winId);
+  void deferredUpdate();
+  bool _updateScheduled;
 
   QProgressBar *_progBar;
   QLabel *_message;

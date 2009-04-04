@@ -14,6 +14,7 @@ FooterState::FooterState()
 Footer::Footer(QWidget *parent)
     : QWidget(parent),
       _currentWinId(0),
+      _updateScheduled(false),
       _qcop("runcible/footer", this) {
 
   QGridLayout *layout = new QGridLayout(this);
@@ -66,27 +67,27 @@ void Footer::showTimeline(int winId, int max) {
     s.timelineVisible = true;
   }
   s.timelinePos = 0;
-  updateState(winId);
+  deferredUpdate();
 }
 
 void Footer::updateTimeline(int winId, int pos) {
   state(winId).timelinePos = pos;
-  updateState(winId);
+  deferredUpdate();
 }
 
 void Footer::hideTimeline(int winId) {
   state(winId).timelineVisible = false;
-  updateState(winId);
+  deferredUpdate();
 }
 
 void Footer::showMessage(int winId, const QString &message) {
   state(winId).message = message;
-  updateState(winId);
+  deferredUpdate();
 }
 
 void Footer::clearMessage(int winId) {
   state(winId).message = QString();
-  updateState(winId);
+  deferredUpdate();
 }
 
 void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
@@ -97,7 +98,7 @@ void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
 
     case QWSServer::Active:
       _currentWinId = window->winId();
-      QTimer::singleShot(500, this, SLOT(updateState()));
+      deferredUpdate();
       break;
 
     case QWSServer::Destroy:
@@ -108,14 +109,16 @@ void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
   }
 }
 
-void Footer::updateState() {
-  updateState(_currentWinId);
+void Footer::deferredUpdate() {
+  if (!_updateScheduled) {
+    _updateScheduled = true;
+    QTimer::singleShot(500, this, SLOT(updateState()));
+  }
 }
 
-void Footer::updateState(int winId) {
-  if (winId != _currentWinId) return;
-
-  const FooterState &s = state(winId);
+void Footer::updateState() {
+  _updateScheduled = false;
+  const FooterState &s = state(_currentWinId);
   if (s.message != _message->text()) {
     _message->setText(s.message);
   }
