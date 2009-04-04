@@ -109,14 +109,31 @@ void PdfView::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);
 
   if (pageIndexEntry > 0) {
-    QPainter painter;
-    painter.begin(this);
-    QFont font("Arial", 72);
-    painter.setFont(font);
-    painter.drawText(0, 200, "Goto page:");
-    painter.drawText(0, 400, QString::number(pageIndexEntry));
+    QFont font("Liberation Serif", 12);
+    QFontMetrics metrics(font);
 
-    painter.end();
+    const int pad = 8;
+    const int lineHeight = metrics.lineSpacing();
+    const int boxHeight = (lineHeight + pad) * 2;
+    const QString prompt("Go to page:");
+    const int promptWidth = metrics.width(prompt);
+    const int boxWidth = promptWidth + (pad * 2);
+
+    QSize canvasSize = size();
+    QPoint boxCenter(canvasSize.width() / 2, canvasSize.height() / 2);
+    QRect boxRect(boxCenter.x() - (boxWidth / 2), boxCenter.y() - (boxHeight / 2), boxWidth, boxHeight);
+    qDebug() << boxRect;
+
+    QPainter painter(this);
+
+    painter.setBrush(QBrush(QColor(0xFF, 0xFF, 0xFF/*, 0xAA*/)));
+    painter.drawRoundedRect(boxRect, 10, 10);
+
+    painter.setFont(font);
+    
+    painter.drawText(boxCenter.x() - (promptWidth / 2), boxCenter.y(), prompt);
+    QString entry = QString("%1_").arg(pageIndexEntry);
+    painter.drawText(boxCenter.x() - metrics.width(entry) / 2, boxCenter.y() + lineHeight, entry);
   }
 }
 
@@ -145,10 +162,16 @@ void PdfView::keyPressEvent(QKeyEvent *event) {
   } else if (event->key() == Qt::Key_Minus) {
     zoomOut();
   } else if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9) {
-    pageIndexEntry = (pageIndexEntry * 10) + (event->key() - Qt::Key_0);
-    update();
+    int entry = (pageIndexEntry * 10) + (event->key() - Qt::Key_0);
+    if (entry <= doc->numPages()) pageIndexEntry = entry;
+    update(0, 150, 600, 350);
   } else if (event->key() == Qt::Key_Escape) {
-    emit back();
+    if (pageIndexEntry > 0) {
+      pageIndexEntry = 0;
+      update(0, 150, 600, 350);
+    } else {
+      emit back();
+    }
   } else if (event->key() == Qt::Key_Return && pageIndexEntry > 0) {
     showPage(pageIndexEntry - 1);
     pageIndexEntry = 0;
