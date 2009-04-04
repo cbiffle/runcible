@@ -31,6 +31,7 @@ ChoiceView::ChoiceView(QWidget *parent)
 
   QFont labelFont("Liberation Serif", 20);
 
+  setUpdatesEnabled(false);
   for (int i = 0; i < NUM_CHOICES; i++) {
     QLabel *label = new QLabel("");
     label->setFont(labelFont);
@@ -45,6 +46,7 @@ ChoiceView::ChoiceView(QWidget *parent)
     _hotkeys << hotkey;
   }
   setLayout(_layout);
+  setUpdatesEnabled(true);
 }
 
 ChoiceView::~ChoiceView() {
@@ -107,6 +109,7 @@ void ChoiceView::pageUp() {
 }
 
 void ChoiceView::refreshLabels() {
+  setUpdatesEnabled(false);
   int cs = _choices.size();
   QFontMetrics metrics(_labels[0]->font());
 
@@ -123,6 +126,7 @@ void ChoiceView::refreshLabels() {
   }
 
   emit switchedToPage(_offset / 10);
+  setUpdatesEnabled(true);
 }
 
 bool operator<(Choice a, Choice b) {
