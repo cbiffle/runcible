@@ -1,26 +1,28 @@
 #include "coord_client.h"
 
+#include <QCopChannel>
+
 CoordinatorClient::CoordinatorClient(const QString &, QObject *parent)
     : QObject(parent) { }
 
 CoordinatorClient::~CoordinatorClient() { }
 
 void CoordinatorClient::openItem(QUrl item) {
-  if (item.scheme() == "file") {
-    QFileInfo fileInfo(item.path());
-    QString binary;
-    if (fileInfo.isDir()) {
-      binary = "runcible-dir-list";
-    } else {
-      binary = "runcible-open-ext-" + fileInfo.suffix();
-    }
-    QProcess::startDetached(binary, QStringList() << fileInfo.absoluteFilePath());
-  } else {
-    qDebug() << "Cannot open non-file item " << item;
+  QByteArray data;
+  QDataStream out(&data, QIODevice::WriteOnly);
+  out << item;
+  qDebug() << "Sending openItem(QUrl)";
+  if (!QCopChannel::send("runcible/coordinator", "openItem(QUrl)", data)) {
+    qDebug() << "Send failed.";
   }
 }
 
 void CoordinatorClient::openItem(QString program, QUrl item) {
-  // TODO(cbiffle): this is stubbed out to avoid using COP.
-  QProcess::startDetached(program, QStringList() << item.toString());
+  QByteArray data;
+  QDataStream out(&data, QIODevice::WriteOnly);
+  out << program << item;
+  qDebug() << "Sending openItem(QString,QUrl)";
+  if (!QCopChannel::send("runcible/coordinator", "openItem(QString,QUrl)", data)) {
+    qDebug() << "Send failed.";
+  }
 }
