@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
   DirManager dirman(path);
   RWindow window;
   ChoiceView view;
-  window.layout()->addWidget(&view);
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
 
@@ -28,8 +27,10 @@ int main(int argc, char *argv[]) {
   QObject::connect(&view, SIGNAL(switchedToPage(int)), &window, SLOT(updateTimeline(int)));
 
   dirman.refresh();
-  window.showMaximized();
+
   window.showMessage(path);
+  window.layout()->addWidget(&view);
+  window.showMaximized();
 
   return app.exec();
 }
