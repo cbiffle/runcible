@@ -1,3 +1,4 @@
 TEMPLATE=subdirs
-SUBDIRS=lib lobby dir-list \
+SUBDIRS=lib lobby lobby/unknown-type \
+        dir-list \
         pdf-component
