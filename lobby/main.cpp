@@ -35,9 +35,6 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   CoordinatorServer server;
 
-  GuardHandler filter;
-  QWSServer::addKeyboardFilter(&filter);
-
   QRect max(0, 0, 600, 800 - 26);
   QWSServer::setMaxWindowRect(max);
 
@@ -53,6 +50,9 @@ int main(int argc, char *argv[]) {
   statusBar.resize(600, 26);
 
   statusBar.show();
+
+  GuardHandler filter;
+  QWSServer::addKeyboardFilter(&filter);
 
   RWindow window;
   window.showMessage("Lobby");
