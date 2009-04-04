@@ -106,6 +106,7 @@ void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
 void Footer::updateState() {
   updateState(_currentWinId);
 }
+
 void Footer::updateState(int winId) {
   if (winId != _currentWinId) return;
 
@@ -117,7 +118,6 @@ void Footer::updateState(int winId) {
 }
 
 void Footer::received(const QString &message, const QByteArray &data) {
-  qDebug() << "Footer received" << message;
   QDataStream in(data);
   int winId;
   if (message == "showMessage(int,QString)") {
