@@ -27,6 +27,7 @@ public:
   virtual ~Footer();
 
 public slots:
+  void updateState();
   void showTimeline(int winId, int max);
   void hideTimeline(int winId);
 
@@ -42,7 +43,7 @@ public slots:
 
 private:
   FooterState &state(int winId = -1);
-  void updateState(int winId = -1);
+  void updateState(int winId);
 
   QProgressBar *_progBar;
   QLabel *_message;

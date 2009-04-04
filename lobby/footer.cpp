@@ -103,9 +103,10 @@ void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
   }
 }
 
+void Footer::updateState() {
+  updateState(_currentWinId);
+}
 void Footer::updateState(int winId) {
-  if (winId == -1) winId = _currentWinId;
-
   if (winId != _currentWinId) return;
 
   const FooterState &s = state(winId);
