@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
+  window.showMessage("How unfortunate.");
   window.showMaximized();
 
   return app.exec();
