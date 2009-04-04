@@ -29,7 +29,7 @@ ChoiceView::ChoiceView(QWidget *parent)
 
   _layout->setColumnStretch(0, 1);
 
-  QFont labelFont("sans", 20);
+  QFont labelFont("Liberation Serif", 20);
 
   for (int i = 0; i < NUM_CHOICES; i++) {
     QLabel *label = new QLabel("");
@@ -38,7 +38,7 @@ ChoiceView::ChoiceView(QWidget *parent)
     _labels << label;
 
     QLabel *hotkey = new QLabel(QString::number((i + 1) % 10));
-    hotkey->setFont(QFont("sans", 20, QFont::Bold));
+    hotkey->setFont(QFont("Liberation Serif", 20, QFont::Bold));
     hotkey->setFrameShape(QFrame::Box);
     hotkey->setLineWidth(1);
     _layout->addWidget(hotkey, i, 1);
@@ -88,6 +88,7 @@ void ChoiceView::setChoices(const QList<Choice> choices) {
     // Integer division floors here.
     _offset = (_choices.size() / 10) * 10;
   }
+  emit morePages(_choices.size() / 10);
   refreshLabels();
 }
 
@@ -120,6 +121,8 @@ void ChoiceView::refreshLabels() {
       _hotkeys[i]->hide();
     }
   }
+
+  emit switchedToPage(_offset / 10);
 }
 
 bool operator<(Choice a, Choice b) {

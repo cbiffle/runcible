@@ -20,8 +20,12 @@ int main(int argc, char *argv[]) {
   window.layout()->addWidget(&view);
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
+
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &dirman, SLOT(activate(Choice)));
   QObject::connect(&dirman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
+
+  QObject::connect(&view, SIGNAL(morePages(int)), &window, SLOT(showTimeline(int)));
+  QObject::connect(&view, SIGNAL(switchedToPage(int)), &window, SLOT(updateTimeline(int)));
 
   dirman.refresh();
   window.showMaximized();

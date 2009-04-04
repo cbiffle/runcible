@@ -49,6 +49,9 @@ public slots:
   void pageDown();
 
 signals:
+  void morePages(int);
+  void switchedToPage(int);
+
   void choiceMade(const Choice);
   void back();
 
