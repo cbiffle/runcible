@@ -1,5 +1,7 @@
 #include <QApplication>
+#include <QLayout>
 #include <choiceview.h>
+#include <rwindow.h>
 #include "dirman.h"
 
 int main(int argc, char *argv[]) {
@@ -13,17 +15,17 @@ int main(int argc, char *argv[]) {
   }
 
   DirManager dirman(path);
+  RWindow window;
   ChoiceView view;
-
-  view.setWindowFlags(Qt::FramelessWindowHint);
+  window.layout()->addWidget(&view);
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &dirman, SLOT(activate(Choice)));
   QObject::connect(&dirman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
 
   dirman.refresh();
-  view.setWindowTitle(path);
-  view.showMaximized();
+  window.showMaximized();
+  window.showMessage(path);
 
   return app.exec();
 }
