@@ -17,12 +17,6 @@ public:
 public slots:
   void openItem(QUrl);
   void openItem(QString program, QUrl);
-
-  void showMessage(const QString &);
-  
-  void showTimeline(int max);
-  void updateTimeline(int pos);
-  void hideTimeline();
 };
 
 #endif // COORD_CLIENT_H
