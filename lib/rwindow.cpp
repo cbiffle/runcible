@@ -8,7 +8,9 @@
 
 RWindow::RWindow(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f | Qt::FramelessWindowHint) {
-  setLayout(new QVBoxLayout(this));
+  QVBoxLayout *layout = new QVBoxLayout(this);
+  layout->setContentsMargins(0,0,0,0);
+  setLayout(layout);
 }
 
 RWindow::~RWindow() { }
