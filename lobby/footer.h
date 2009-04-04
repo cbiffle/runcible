@@ -27,30 +27,30 @@ public:
   virtual ~Footer();
 
 public slots:
-  void showTimeline(int max);
-  void hideTimeline();
+  void showTimeline(int winId, int max);
+  void hideTimeline(int winId);
 
-  void updateTimeline(int pos);
+  void updateTimeline(int winId, int pos);
 
-  void showMessage(const QString &message);
-  void clearMessage();
+  void showMessage(int winId, const QString &message);
+  void clearMessage(int winId);
 
   void windowEvent(QWSWindow *window, QWSServer::WindowEvent eventType);
 
-  void updateState();
 
   void received(const QString &message, const QByteArray &data);
 
 private:
-  FooterState &state();
+  FooterState &state(int winId = -1);
+  void updateState(int winId = -1);
 
   QProgressBar *_progBar;
   QLabel *_message;
-  QWSWindow *_currentWindow;
+  int _currentWinId;
 
   FooterState _default;
 
-  QHash<QWSWindow *, FooterState> _windowStates;
+  QHash<int, FooterState> _windowStates;
 
   QCopChannel _qcop;
 

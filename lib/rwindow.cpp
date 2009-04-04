@@ -15,8 +15,8 @@ RWindow::~RWindow() { }
 void RWindow::showMessage(const QString &message) {
   QByteArray data;
   QDataStream out(&data, QIODevice::WriteOnly);
-  out << message;
-  QCopChannel::send(C_FOOTER, "showMessage(QString)", data);
+  out << (int) winId() << message;
+  QCopChannel::send(C_FOOTER, "showMessage(int,QString)", data);
 }
 
 void RWindow::clearMessage() {
@@ -26,17 +26,20 @@ void RWindow::clearMessage() {
 void RWindow::showTimeline(int max) {
   QByteArray data;
   QDataStream out(&data, QIODevice::WriteOnly);
-  out << max;
-  QCopChannel::send(C_FOOTER, "showTimeline(int)", data);
+  out << (int) winId() << max;
+  QCopChannel::send(C_FOOTER, "showTimeline(int,int)", data);
 }
 
 void RWindow::updateTimeline(int pos) {
   QByteArray data;
   QDataStream out(&data, QIODevice::WriteOnly);
-  out << pos;
-  QCopChannel::send(C_FOOTER, "updateTimeline(int)", data);
+  out << (int) winId() << pos;
+  QCopChannel::send(C_FOOTER, "updateTimeline(int,int)", data);
 }
 
 void RWindow::hideTimeline() {
-  QCopChannel::send(C_FOOTER, "hideTimeline()");
+  QByteArray data;
+  QDataStream out(&data, QIODevice::WriteOnly);
+  out << (int) winId();
+  QCopChannel::send(C_FOOTER, "hideTimeline(int)", data);
 }

@@ -13,6 +13,7 @@ FooterState::FooterState()
 
 Footer::Footer(QWidget *parent)
     : QWidget(parent),
+      _currentWinId(0),
       _qcop("runcible/footer", this) {
 
   QGridLayout *layout = new QGridLayout(this);
@@ -46,68 +47,68 @@ Footer::Footer(QWidget *parent)
 
 Footer::~Footer() {}
 
-FooterState &Footer::state() {
-  if (_currentWindow == 0) {
+FooterState &Footer::state(int winId) {
+  if (winId == -1) winId = _currentWinId;
+
+  if (winId == 0) {
     return _default;
   }
-  return _windowStates[_currentWindow];
+  return _windowStates[winId];
 }
 
-void Footer::showTimeline(int max) {
-  qDebug() << "showTimeline" << max << _currentWindow;
-  state().timelineMax = max;
-  state().timelinePos = 0;
-  state().timelineVisible = true;
-  updateState();
+void Footer::showTimeline(int winId, int max) {
+  FooterState &s = state(winId);
+  s.timelineMax = max;
+  s.timelinePos = 0;
+  s.timelineVisible = true;
+  updateState(winId);
 }
 
-void Footer::updateTimeline(int pos) {
-  qDebug() << "updateTimeline" << pos << _currentWindow;
-  state().timelinePos = pos;
-  updateState();
+void Footer::updateTimeline(int winId, int pos) {
+  state(winId).timelinePos = pos;
+  updateState(winId);
 }
 
-void Footer::hideTimeline() {
-  qDebug() << "hideTimeline" << _currentWindow;
-  state().timelineVisible = false;
-  updateState();
+void Footer::hideTimeline(int winId) {
+  state(winId).timelineVisible = false;
+  updateState(winId);
 }
 
-void Footer::showMessage(const QString &message) {
-  state().message = message;
-  updateState();
+void Footer::showMessage(int winId, const QString &message) {
+  state(winId).message = message;
+  updateState(winId);
 }
 
-void Footer::clearMessage() {
-  state().message = QString();
-  updateState();
+void Footer::clearMessage(int winId) {
+  state(winId).message = QString();
+  updateState(winId);
 }
 
 void Footer::windowEvent(QWSWindow *window, QWSServer::WindowEvent event) {
   switch (event) {
     case QWSServer::Create:
-      qDebug() << "initial footer for" << window;
-      _windowStates.insert(window, FooterState());
+      _windowStates.insert(window->winId(), FooterState());
       break;
 
     case QWSServer::Active:
-      qDebug() << "showing footer for" << window;
-      _currentWindow = window;
+      _currentWinId = window->winId();
       QTimer::singleShot(250, this, SLOT(updateState()));
       break;
 
     case QWSServer::Destroy:
-      qDebug() << "nuking footer for" << window;
-      _windowStates.remove(window);
+      _windowStates.remove(window->winId());
       break;
 
     default: break;
   }
-  qDebug() << "winid =" << window->winId();
 }
 
-void Footer::updateState() {
-  const FooterState &s = state();
+void Footer::updateState(int winId) {
+  if (winId == -1) winId = _currentWinId;
+
+  if (winId != _currentWinId) return;
+
+  const FooterState &s = state(winId);
   if (s.message != _message->text()) _message->setText(s.message);
   if (s.timelineMax != _progBar->maximum()) _progBar->setMaximum(s.timelineMax);
   if (s.timelinePos != _progBar->value()) _progBar->setValue(s.timelinePos);
@@ -117,20 +118,22 @@ void Footer::updateState() {
 void Footer::received(const QString &message, const QByteArray &data) {
   qDebug() << "Footer received" << message;
   QDataStream in(data);
-  if (message == "showMessage(QString)") {
+  int winId;
+  if (message == "showMessage(int,QString)") {
     QString msg;
-    in >> msg;
-    showMessage(msg);
-  } else if (message == "showTimeline(int)") {
+    in >> winId >> msg;
+    showMessage(winId, msg);
+  } else if (message == "showTimeline(int,int)") {
     int max;
-    in >> max;
-    showTimeline(max);
-  } else if (message == "updateTimeline(int)") {
+    in >> winId >> max;
+    showTimeline(winId, max);
+  } else if (message == "updateTimeline(int,int)") {
     int pos;
-    in >> pos;
-    updateTimeline(pos);
-  } else if (message == "hideTimeline()") {
-    hideTimeline();
+    in >> winId >> pos;
+    updateTimeline(winId, pos);
+  } else if (message == "hideTimeline(int)") {
+    in >> winId;
+    hideTimeline(winId);
   } else {
     qDebug() << "Message not recognized:" << message;
   }
