@@ -41,14 +41,10 @@ public:
     QRectF viewRect(bounds.left() / 72. * scale, bounds.top() / 72. * scale,
         bounds.width() / 72. * scale, bounds.height() / 72. * scale);
 
-/*    viewRect.adjust(
-        widget->width() - viewRect.width() / 2,
-        widget->height() - viewRect.height() / 2,
-        widget->width() - viewRect.width(),
-        widget->height() - viewRect.height());*/
+    QRect iRect = viewRect.toAlignedRect();
 
     return page->renderToImage(scale, scale,
-         viewRect.left(), viewRect.top(), viewRect.width(), viewRect.height());
+         iRect.left(), iRect.top(), iRect.width(), iRect.height());
   }
 };
 
