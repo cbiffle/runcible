@@ -61,15 +61,28 @@ void ChoiceView::paintEvent(QPaintEvent *event) {
     painter.drawLine(center - arrowHeight, height() - arrowHeight - 1,
         center + arrowHeight, height() - arrowHeight - 1);
   }
+
+  QLinearGradient fade(QPointF(0,0), QPointF(labelWidth, 0));
+  fade.setColorAt(0, Qt::black);
+  fade.setColorAt(0.95, Qt::black);
+  fade.setColorAt(1.0, QColor(0xAA, 0xAA, 0xAA));
  
+  QTextOption noWrap;
+  noWrap.setWrapMode(QTextOption::NoWrap);
+
   // Choice area
   for (int row = 0; row < NUM_CHOICES; row++) {
     const int item = row + _offset;
     painter.eraseRect(0, y, w, yInc);
     if (item < _choices.size()) {
       const Choice &c = _choices[item];
-      painter.drawText(0, y + baseline,
-          metrics.elidedText(c.title(), Qt::ElideMiddle, labelWidth));
+      if (metrics.width(c.title()) > labelWidth) {
+        painter.setPen(QPen(QBrush(fade), 1));
+      } else {
+        painter.setPen(QPen(Qt::black));
+      }
+
+      painter.drawText(QRectF(0, y, labelWidth, yInc), c.title(), noWrap);
 
       painter.save();
       if (row > 0) {
