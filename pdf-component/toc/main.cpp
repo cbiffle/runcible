@@ -1,4 +1,6 @@
 #include <QApplication>
+#include <QLayout>
+#include <rwindow.h>
 #include <choiceview.h>
 #include "tocman.h"
 
@@ -13,16 +15,19 @@ int main(int argc, char *argv[]) {
   QUrl url(argv[1]);
 
   TocManager tocman(url.path());
+  RWindow window;
   ChoiceView view;
 
-  view.setWindowTitle("Contents of " + QFileInfo(url.path()).fileName());
+  window.layout()->addWidget(&view);
+
+  window.showMessage("Contents of " + QFileInfo(url.path()).fileName());
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &tocman, SLOT(activate(Choice)));
   QObject::connect(&tocman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
 
   tocman.refresh();
-  view.showMaximized();
+  window.showMaximized();
 
   return app.exec();
 }
