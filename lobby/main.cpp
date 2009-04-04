@@ -17,7 +17,7 @@ public:
   virtual ~GuardHandler() {
     delete guard;
   }
-  virtual bool filter(int unicode, int keycode, int modifiers, bool isPress, bool autoRepeat) {
+  virtual bool filter(int, int keycode, int, bool isPress, bool autoRepeat) {
     if (keycode == Qt::Key_Standby && isPress && !autoRepeat) {
       if (guard->isVisible()) {
         guard->hide();
