@@ -33,7 +33,14 @@ void CoordinatorServer::openItem(QUrl item) {
     } else {
       binary = "runcible-open-ext-" + fileInfo.suffix();
     }
-    QProcess::startDetached(binary, QStringList() << fileInfo.absoluteFilePath());
+    bool success = QProcess::startDetached(binary, QStringList() << fileInfo.absoluteFilePath());
+    if (!success) {
+      binary = "runcible-handle-unknown-type";
+      success = QProcess::startDetached(binary, QStringList() << fileInfo.absoluteFilePath());
+    }
+    if (!success) {
+      qWarning("Unable to launch viewer or unknown-type handler");
+    }
   } else {
     qDebug() << "Cannot open non-file item " << item;
   }
