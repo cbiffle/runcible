@@ -4,12 +4,13 @@
 #include "choiceview.h"
 #include "spawner.h"
 #include "footer.h"
+#include "coord-server.h"
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
+  CoordinatorServer server;
   QRect max(0, 0, 600, 800 - 26);
   QWSServer::setMaxWindowRect(max);
-
 //  app.setStyleSheet("ChoiceView { background: white }");
 
   QSettings settings("runcible", "lobby");
