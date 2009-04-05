@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QRegExp>
 #include <QTextDocument>
+#include <QTextOption>
 #include <rwindow.h>
 #include "pageview.h"
 
@@ -34,7 +35,9 @@ int main(int argc, char *argv[]) {
   window.layout()->addWidget(&display);
   qDebug() << "Added display.";
 
-  QTextDocument doc(text);
+  QTextDocument doc;
+  doc.setDefaultTextOption(QTextOption(Qt::AlignJustify));
+  doc.setPlainText(text);
   qDebug() << "Created doc.";
   display.setDocument(&doc);
   qDebug() << "Set doc.";
