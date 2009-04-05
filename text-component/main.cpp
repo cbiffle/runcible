@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <QApplication>
 #include <QFile>
+#include <QFileInfo>
 #include <QLayout>
 #include <QDebug>
 #include <QRegExp>
@@ -20,6 +21,8 @@ int main(int argc, char *argv[]) {
 
   QString filename(argv[1]);
   QFile file(filename);
+  QString suffix(QFileInfo(file).suffix());
+
   qDebug() << "Loading" << filename;
   QString text;
   if (file.open(QIODevice::ReadOnly)) {
@@ -28,7 +31,6 @@ int main(int argc, char *argv[]) {
     qDebug() << "Loaded";
   }
 
-  text.replace(QRegExp("([^\\r\\n])(\\r)?\\n([^\\n\\r])"), "\\1  \\3");
 
   RWindow window;
   PageView display;
@@ -40,7 +42,12 @@ int main(int argc, char *argv[]) {
 
   QTextDocument doc;
   doc.setDefaultTextOption(QTextOption(Qt::AlignJustify));
-  doc.setPlainText(text);
+  if (suffix == "html") {
+    doc.setHtml(text);
+  } else {
+    text.replace(QRegExp("([^\\r\\n])(\\r)?\\n([^\\n\\r])"), "\\1  \\3");
+    doc.setPlainText(text);
+  }
   qDebug() << "Created doc.";
   display.setDocument(&doc);
   qDebug() << "Set doc.";
