@@ -24,7 +24,9 @@ void PageView::setDocument(QTextDocument *doc) {
     _doc->setPageSize(pageRect.size());
   }
 
-  //update();
+  (void) _doc->documentLayout();
+
+  emit pageCountChanged(_doc->pageCount());
 }
 
 static void renderPage(int index, QPainter *p, const QTextDocument *doc, const QRectF &body) {
@@ -49,8 +51,6 @@ void PageView::paintEvent(QPaintEvent *event) {
   if (_doc == 0) return;
 
   QRectF pageRect(0, 0, width(), height());
-
-  (void) _doc->documentLayout();
 
   QPainter p(this);
   renderPage(_pageIndex, &p, _doc, pageRect);
@@ -82,7 +82,7 @@ void PageView::resizeEvent(QResizeEvent *event) {
 void PageView::pageUp() {
   if (_doc != 0) {
     _pageIndex = qMax(0, _pageIndex - 1);
-    qDebug() << _pageIndex;
+    emit pageChanged(_pageIndex);
     update();
   }
 }
@@ -90,7 +90,7 @@ void PageView::pageUp() {
 void PageView::pageDown() {
   if (_doc != 0) {
     _pageIndex = qMin(_doc->pageCount() - 1, _pageIndex + 1);
-    qDebug() << _pageIndex;
+    emit pageChanged(_pageIndex);
     update();
   }
 }

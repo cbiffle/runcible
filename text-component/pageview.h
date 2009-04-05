@@ -19,6 +19,10 @@ public slots:
   void pageUp();
   void pageDown();
 
+signals:
+  void pageCountChanged(int);
+  void pageChanged(int);
+
 protected:
   virtual void paintEvent(QPaintEvent *);
   virtual void keyPressEvent(QKeyEvent *);

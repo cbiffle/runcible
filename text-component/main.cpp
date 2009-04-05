@@ -35,6 +35,9 @@ int main(int argc, char *argv[]) {
   window.layout()->addWidget(&display);
   qDebug() << "Added display.";
 
+  QObject::connect(&display, SIGNAL(pageCountChanged(int)), &window, SLOT(showTimeline(int)));
+  QObject::connect(&display, SIGNAL(pageChanged(int)), &window, SLOT(updateTimeline(int)));
+
   QTextDocument doc;
   doc.setDefaultTextOption(QTextOption(Qt::AlignJustify));
   doc.setPlainText(text);
@@ -44,7 +47,7 @@ int main(int argc, char *argv[]) {
 
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
-  qDebug() << "Showing...";
+  window.showMessage(filename);
   window.showMaximized();
 
   return app.exec();
