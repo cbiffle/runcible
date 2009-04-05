@@ -18,6 +18,7 @@ public slots:
   void setDocument(QTextDocument *);
   void pageUp();
   void pageDown();
+  void goToPage(int);
 
 signals:
   void pageCountChanged(int);
@@ -30,7 +31,9 @@ protected:
 
 private:
   QTextDocument *_doc;
+  QRect _boxRect;
   int _pageIndex;
+  int _pageNumberEntry;
 };
 
 #endif // PAGEVIEW_H
