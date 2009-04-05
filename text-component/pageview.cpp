@@ -70,6 +70,15 @@ void PageView::keyPressEvent(QKeyEvent *event) {
   QWidget::keyPressEvent(event);
 }
 
+void PageView::resizeEvent(QResizeEvent *event) {
+  QWidget::resizeEvent(event);
+
+  if (_doc != 0) {
+    QRectF pageRect(0, 0, width(), height());
+    _doc->setPageSize(pageRect.size());
+  }
+}
+
 void PageView::pageUp() {
   if (_doc != 0) {
     _pageIndex = qMax(0, _pageIndex - 1);

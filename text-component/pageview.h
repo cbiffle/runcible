@@ -5,6 +5,7 @@
 class QTextDocument;
 class QPaintEvent;
 class QKeyEvent;
+class QResizeEvent;
 
 class PageView : public QWidget {
   Q_OBJECT
@@ -21,6 +22,7 @@ public slots:
 protected:
   virtual void paintEvent(QPaintEvent *);
   virtual void keyPressEvent(QKeyEvent *);
+  virtual void resizeEvent(QResizeEvent *);
 
 private:
   QTextDocument *_doc;
