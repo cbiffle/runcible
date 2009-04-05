@@ -25,7 +25,10 @@ ChoiceView::ChoiceView(QWidget *parent)
       _offset(0) {
 
   setFocusPolicy(Qt::StrongFocus);
-  setFont(QFont("Liberation Serif", 20));
+
+  QFont myFont;
+  myFont.setPointSize(20);
+  setFont(myFont);
 }
 
 ChoiceView::~ChoiceView() { }

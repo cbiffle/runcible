@@ -111,7 +111,7 @@ void PdfView::paintEvent(QPaintEvent *event) {
   QLabel::paintEvent(event);
 
   if (pageIndexEntry > 0) {
-    QFont font("Liberation Serif", 12);
+    QFont font;
     QFontMetrics metrics(font);
 
     const int pad = 8;

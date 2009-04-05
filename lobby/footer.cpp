@@ -29,7 +29,10 @@ Footer::Footer(QWidget *parent)
 
   _message = new QLabel();
   _message->setMaximumHeight(20);
-  _message->setFont(QFont("Liberation Serif", 6, QFont::Black));
+  QFont msgFont;
+  msgFont.setPointSize(6);
+  msgFont.setWeight(QFont::Black);
+  _message->setFont(msgFont);
 
   layout->addWidget(_message, 0, 0);
   layout->addWidget(_progBar, 0, 1);

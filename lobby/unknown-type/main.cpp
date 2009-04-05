@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
+  app.setFont(QFont("Liberation Serif", 12));
 
   QString filename("unknown");
   if (argc == 2) {

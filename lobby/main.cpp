@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QWSServer>
+#include <QFont>
 #include <rwindow.h>
 #include "choiceview.h"
 #include "spawner.h"
@@ -33,6 +34,8 @@ public:
 };
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
+  app.setFont(QFont("Liberation Serif", 12));
+
   CoordinatorServer server;
 
   QRect max(0, 0, 600, 800 - 26);

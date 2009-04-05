@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
+  app.setFont(QFont("Liberation Serif", 12));
 
   if (argc != 2) {
     fprintf(stderr, "Usage: runcible-contents-pdf <file:url>");
