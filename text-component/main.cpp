@@ -31,14 +31,13 @@ int main(int argc, char *argv[]) {
 
   RWindow window;
   PageView display;
+  window.layout()->addWidget(&display);
+  qDebug() << "Added display.";
 
   QTextDocument doc(text);
   qDebug() << "Created doc.";
   display.setDocument(&doc);
   qDebug() << "Set doc.";
-
-  window.layout()->addWidget(&display);
-  qDebug() << "Added display.";
 
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 

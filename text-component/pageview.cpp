@@ -19,6 +19,11 @@ PageView::~PageView() {}
 void PageView::setDocument(QTextDocument *doc) {
   _doc = doc;
   _pageIndex = 0;
+  if (_doc != 0) {
+    QRectF pageRect(0, 0, width(), height());
+    _doc->setPageSize(pageRect.size());
+  }
+
   //update();
 }
 
@@ -44,7 +49,6 @@ void PageView::paintEvent(QPaintEvent *event) {
   if (_doc == 0) return;
 
   QRectF pageRect(0, 0, width(), height());
-  _doc->setPageSize(pageRect.size());
 
   (void) _doc->documentLayout();
 
