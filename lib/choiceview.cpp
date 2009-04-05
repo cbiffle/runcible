@@ -94,7 +94,7 @@ void ChoiceView::paintEvent(QPaintEvent *event) {
       }
 
       painter.setPen(QColor(0x55, 0x55, 0x55));
-      painter.drawRect(labelWidth + 10, y + metrics.leading(), yInc - 1, metrics.height());
+      painter.drawRoundedRect(labelWidth + 10, y + metrics.leading(), yInc - 1, metrics.height(), 4, 4);
       painter.drawText(hotkeyCenter - (metrics.width(_hotkeys[row]) / 2), y + baseline,
           QString(1, _hotkeys[row]));
 
