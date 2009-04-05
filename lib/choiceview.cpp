@@ -27,7 +27,7 @@ ChoiceView::ChoiceView(QWidget *parent)
   setFocusPolicy(Qt::StrongFocus);
 
   QFont myFont;
-  myFont.setPointSize(20);
+  myFont.setPointSize(16);
   setFont(myFont);
 }
 
