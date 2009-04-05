@@ -139,7 +139,7 @@ void ChoiceView::setChoices(const QList<Choice> choices) {
     // Integer division floors here.
     _offset = (_choices.size() / 10) * 10;
   }
-  emit morePages(_choices.size() / 10);
+  emit morePages((_choices.size() + 9) / 10);
   refreshLabels();
 }
 
