@@ -21,21 +21,20 @@ Footer::Footer(QWidget *parent)
   layout->setSpacing(2);
   layout->setContentsMargins(1,1,1,1);
 
-  _progBar = new QProgressBar;
-  _progBar->setMaximumHeight(20);
-  _progBar->setMaximum(1);
-  _progBar->setTextVisible(false);
-  _progBar->hide();
+  QFont msgFont;
+  msgFont.setPointSize(8);
+  msgFont.setWeight(QFont::Black);
+
+  _timeline = new QLabel();
+  _timeline->setFont(msgFont);
+  //_timeline->setMaximumHeight(20);
 
   _message = new QLabel();
-  _message->setMaximumHeight(20);
-  QFont msgFont;
-  msgFont.setPointSize(6);
-  msgFont.setWeight(QFont::Black);
+  //_message->setMaximumHeight(20);
   _message->setFont(msgFont);
 
   layout->addWidget(_message, 0, 0);
-  layout->addWidget(_progBar, 0, 1);
+  layout->addWidget(_timeline, 0, 1);
   layout->setColumnStretch(0, 1);
   setLayout(layout);
 
@@ -125,14 +124,16 @@ void Footer::updateState() {
   if (s.message != _message->text()) {
     _message->setText(s.message);
   }
-  if (s.timelineMax != _progBar->maximum()) {
-    _progBar->setMaximum(s.timelineMax);
+  if (s.timelineVisible) {
+    QString timelineMsg = QString("Page %1 of %2")
+        .arg(s.timelinePos + 1)
+        .arg(s.timelineMax);
+    if (timelineMsg != _timeline->text()) {
+      _timeline->setText(timelineMsg);
+    }
   }
-  if (s.timelinePos != _progBar->value()) {
-    _progBar->setValue(s.timelinePos);
-  }
-  if (s.timelineVisible != _progBar->isVisible()) {
-    _progBar->setVisible(s.timelineVisible);
+  if (s.timelineVisible != _timeline->isVisible()) {
+    _timeline->setVisible(s.timelineVisible);
   }
 }
 

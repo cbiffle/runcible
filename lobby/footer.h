@@ -46,7 +46,7 @@ private:
   void deferredUpdate();
   bool _updateScheduled;
 
-  QProgressBar *_progBar;
+  QLabel *_timeline;
   QLabel *_message;
   int _currentWinId;
 
