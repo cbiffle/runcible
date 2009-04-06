@@ -68,7 +68,7 @@ void Footer::showTimeline(int winId, int max) {
     s.timelineMax = max;
     s.timelineVisible = true;
   }
-  s.timelinePos = 0;
+  s.timelinePos = qMin(s.timelinePos, s.timelineMax);
   deferredUpdate();
 }
 
