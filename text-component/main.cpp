@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
-  window.showMessage(doc.metaInformation(QTextDocument::DocumentTitle));
+  window.showMessage(filename);
   window.showMaximized();
 
   return app.exec();
