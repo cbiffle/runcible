@@ -49,22 +49,16 @@ public:
 };
 
 PdfView::PdfView(QWidget *parent) 
-    : QLabel(parent) {
-  pageIndex = 0;
-  pageIndexEntry = 0;
+    : RDocView(parent) {
   doc = 0;
+  connect(this, SIGNAL(pageChanged(int)), this, SLOT(setupPage(int)));
 
   scalingStrategies << new FitPageScaler() << new TextScaler();
   scalerIndex = 0;
-
-  setFocusPolicy(Qt::StrongFocus);
 }
 
 PdfView::~PdfView() {
-  while (!scalingStrategies.isEmpty()) {
-    delete scalingStrategies.takeFirst();
-  }
-
+  qDeleteAll(scalingStrategies);
   delete doc;
 }
 
@@ -79,64 +73,34 @@ ScalingStrategy *PdfView::scaler() {
 void PdfView::zoomIn() {
   if (scalerIndex < scalingStrategies.size() - 1) {
     scalerIndex++;
-    showPage(pageIndex);
+    setupPage(pageIndex());
+    update();
   }
 }
 
 void PdfView::zoomOut() {
   if (scalerIndex > 0) {
     scalerIndex--;
-    showPage(pageIndex);
+    setupPage(pageIndex());
+    update();
   }
 }
 
 void PdfView::resizeEvent(QResizeEvent *event) {
-  QLabel::resizeEvent(event);
-  showPage(pageIndex);
+  RDocView::resizeEvent(event);
+  setupPage(pageIndex());
 }
 
-void PdfView::showPage(int newPage) {
-  if (newPage != pageIndex) {
-    pageIndex = newPage;
-    emit pageChanged(newPage);
-  }
-
+void PdfView::setupPage(int newPage) {
   Poppler::Page *page = doc->page(newPage);
   QImage image = scaler()->scaleAndRender(page, this);
 
-  setPixmap(QPixmap::fromImage(image));
+  _pageImage = QPixmap::fromImage(image);
 }
 
-void PdfView::paintEvent(QPaintEvent *event) {
-  QLabel::paintEvent(event);
-
-  if (pageIndexEntry > 0) {
-    QFont font;
-    QFontMetrics metrics(font);
-
-    const int pad = 8;
-    const int lineHeight = metrics.lineSpacing();
-    const int boxHeight = (lineHeight + pad) * 2;
-    const QString prompt("Go to page:");
-    const int promptWidth = metrics.width(prompt);
-    const int boxWidth = promptWidth + (pad * 2);
-
-    QSize canvasSize = size();
-    QPoint boxCenter(canvasSize.width() / 2, canvasSize.height() / 2);
-    QRect boxRect(boxCenter.x() - (boxWidth / 2), boxCenter.y() - (boxHeight / 2), boxWidth, boxHeight);
-    qDebug() << boxRect;
-
-    QPainter painter(this);
-
-    painter.setBrush(QBrush(QColor(0xFF, 0xFF, 0xFF/*, 0xAA*/)));
-    painter.drawRoundedRect(boxRect, 10, 10);
-
-    painter.setFont(font);
-    
-    painter.drawText(boxCenter.x() - (promptWidth / 2), boxCenter.y(), prompt);
-    QString entry = QString("%1_").arg(pageIndexEntry);
-    painter.drawText(boxCenter.x() - metrics.width(entry) / 2, boxCenter.y() + lineHeight, entry);
-  }
+void PdfView::renderPage(int page) {
+  QPainter p(this);
+  p.drawPixmap(_pageImage.rect(), _pageImage, _pageImage.rect());
 }
 
 bool PdfView::setDocument(const QString &path) {
@@ -148,37 +112,13 @@ bool PdfView::setDocument(const QString &path) {
   if (doc) {
     doc->setRenderHint(Poppler::Document::Antialiasing);
     doc->setRenderHint(Poppler::Document::TextAntialiasing);
-    emit morePages(doc->numPages());
-    showPage(0);
+    emit pageCountChanged(doc->numPages());
+    setupPage(0);
   }
 
   return doc;
 }
 
-void PdfView::keyPressEvent(QKeyEvent *event) {
-  if (event->key() == Qt::Key_Down && pageIndex < doc->numPages()) {
-    showPage(pageIndex + 1);
-  } else if (event->key() == Qt::Key_Up && pageIndex > 0) {
-    showPage(pageIndex - 1);
-  } else if (event->key() == Qt::Key_Plus) {
-    zoomIn();
-  } else if (event->key() == Qt::Key_Minus) {
-    zoomOut();
-  } else if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9) {
-    int entry = (pageIndexEntry * 10) + (event->key() - Qt::Key_0);
-    if (entry < doc->numPages()) pageIndexEntry = entry;
-    update(0, 150, 600, 350);
-  } else if (event->key() == Qt::Key_Escape) {
-    if (pageIndexEntry > 0) {
-      pageIndexEntry /= 10;
-      update(0, 150, 600, 350);
-    } else {
-      emit back();
-    }
-  } else if (event->key() == Qt::Key_Return && pageIndexEntry > 0) {
-    showPage(pageIndexEntry - 1);
-    pageIndexEntry = 0;
-  } else {
-    QLabel::keyPressEvent(event);
-  }
+int PdfView::pageCount() {
+  return doc->numPages();
 }

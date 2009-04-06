@@ -28,11 +28,11 @@ int main(int argc, char *argv[])
   if (path.hasFragment()) {
     QString fragment = path.fragment();
     if (fragment.startsWith("page:")) {
-      widget.showPage(fragment.right(fragment.size() - 5).toInt());
+      widget.goToPage(fragment.right(fragment.size() - 5).toInt());
     }
   }
 
-  QObject::connect(&widget, SIGNAL(back()), &app, SLOT(quit()));
+  QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
   window.showMaximized();
   return app.exec();

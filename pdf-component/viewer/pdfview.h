@@ -1,7 +1,7 @@
 #ifndef PDFVIEW_H
 #define PDFVIEW_H
 
-#include <QLabel>
+#include <rdocview.h>
 #include <QList>
 #include <poppler-qt4.h>
 
@@ -20,7 +20,7 @@ public:
  * A widget that can display pages of a PDF sequentially.  Derived
  * from Trolltech's Poppler PDF example (Qt Quarterly 27).
  */
-class PdfView : public QLabel {
+class PdfView : public RDocView {
   Q_OBJECT
 
 public:
@@ -29,29 +29,24 @@ public:
 
   Poppler::Document *document();
 
-  virtual void keyPressEvent(QKeyEvent *event);
   virtual void resizeEvent(QResizeEvent *event);
-
-  virtual void paintEvent(QPaintEvent *event);
+  virtual int pageCount();
 
 public slots:
   bool setDocument(const QString &path);
-  void zoomIn();
-  void zoomOut();
-  void showPage(int);
+  virtual void zoomIn();
+  virtual void zoomOut();
+
+  void setupPage(int);
   
-signals:
-  void pageChanged(int);
-  void morePages(int);
-  void back();
+protected:
+  virtual void renderPage(int page);
 
 private:
   ScalingStrategy *scaler();
 
   Poppler::Document *doc;
-
-  int pageIndex;
-  int pageIndexEntry;
+  QPixmap _pageImage;
 
   int scalerIndex;
   QList<ScalingStrategy *> scalingStrategies;
