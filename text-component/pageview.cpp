@@ -20,14 +20,16 @@ void PageView::setDocument(QTextDocument *doc) {
   if (_doc != 0) {
     QRectF pageRect(0, 0, width(), height());
     _doc->setPageSize(pageRect.size());
+    (void) _doc->documentLayout();
+
+    emit pageCountChanged(_doc->pageCount());
+    update();
   }
-
-  (void) _doc->documentLayout();
-
-  emit pageCountChanged(_doc->pageCount());
 }
 
 void PageView::renderPage(int index) {
+  if (_doc == 0) return;
+
   QRectF body(0, 0, width(), height());
   QPainter p(this);
 
