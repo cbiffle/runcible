@@ -166,11 +166,11 @@ void PdfView::keyPressEvent(QKeyEvent *event) {
     zoomOut();
   } else if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9) {
     int entry = (pageIndexEntry * 10) + (event->key() - Qt::Key_0);
-    if (entry <= doc->numPages()) pageIndexEntry = entry;
+    if (entry < doc->numPages()) pageIndexEntry = entry;
     update(0, 150, 600, 350);
   } else if (event->key() == Qt::Key_Escape) {
     if (pageIndexEntry > 0) {
-      pageIndexEntry = 0;
+      pageIndexEntry /= 10;
       update(0, 150, 600, 350);
     } else {
       emit back();
