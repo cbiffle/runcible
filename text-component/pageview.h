@@ -17,6 +17,8 @@ public:
 
 public slots:
   void setDocument(QTextDocument *);
+  virtual void zoomIn();
+  virtual void zoomOut();
 
 protected:
   virtual void renderPage(int);

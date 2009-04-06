@@ -60,3 +60,22 @@ int PageView::pageCount() {
   return _doc->pageCount();
 }
 
+void PageView::zoomIn() {
+  if (_doc == 0) return;
+
+  QFont font(_doc->defaultFont());
+  font.setPointSize(qMin(font.pointSize() + 2, 20));
+  _doc->setDefaultFont(font);
+  emit pageCountChanged(pageCount());
+  update();
+}
+
+void PageView::zoomOut() {
+  if (_doc == 0) return;
+
+  QFont font(_doc->defaultFont());
+  font.setPointSize(qMax(font.pointSize() - 2, 6));
+  _doc->setDefaultFont(font);
+  emit pageCountChanged(pageCount());
+  update();
+}
