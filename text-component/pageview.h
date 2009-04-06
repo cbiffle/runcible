@@ -16,7 +16,7 @@ public:
   virtual ~PageView();
 
 public slots:
-  void setDocument(QTextDocument *);
+  void setDocument(const QString &path, QTextDocument *);
   virtual void zoomIn();
   virtual void zoomOut();
 

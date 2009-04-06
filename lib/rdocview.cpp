@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QKeyEvent>
+#include <QUrl>
 
 RDocView::RDocView(QWidget *parent)
     : QWidget(parent),
@@ -134,7 +135,8 @@ int RDocView::pageIndex() {
 void RDocView::zoomIn() { }
 void RDocView::zoomOut() { }
 
-void RDocView::contentsChanged() {
+void RDocView::contentsChanged(const QUrl &docBase) {
+  _docBase = docBase;
   emit pageCountChanged(pageCount());
   update();
 }

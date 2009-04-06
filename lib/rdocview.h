@@ -2,6 +2,7 @@
 #define RDOCVIEW_H
 
 #include <QWidget>
+#include <QUrl>
 class QPaintEvent;
 class QKeyEvent;
 class QResizeEvent;
@@ -35,12 +36,13 @@ protected:
   virtual int pageCount() = 0;
 
   void reset();
-  void contentsChanged();
+  void contentsChanged(const QUrl &);
   
 private:
   QRect _boxRect;
   int _pageIndex;
   int _pageNumberEntry;
+  QUrl _docBase;
 };
 
 #endif // RDOCVIEW_H

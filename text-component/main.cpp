@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     doc.setPlainText(text);
   }
   qDebug() << "Created doc.";
-  display.setDocument(&doc);
+  display.setDocument(filename, &doc);
   qDebug() << "Set doc.";
 
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));

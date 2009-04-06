@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QDebug>
+#include <QUrl>
 #include <stdio.h>
 
 #include <iostream>
@@ -112,7 +113,7 @@ bool PdfView::setDocument(const QString &path) {
   if (doc) {
     doc->setRenderHint(Poppler::Document::Antialiasing);
     doc->setRenderHint(Poppler::Document::TextAntialiasing);
-    contentsChanged();
+    contentsChanged(QUrl::fromLocalFile(path));
     setupPage(pageIndex());
   }
 

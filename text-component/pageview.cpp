@@ -6,6 +6,7 @@
 #include <QPaintEvent>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QUrl>
 
 PageView::PageView(QWidget *parent)
     : RDocView(parent),
@@ -14,7 +15,7 @@ PageView::PageView(QWidget *parent)
 
 PageView::~PageView() {}
 
-void PageView::setDocument(QTextDocument *doc) {
+void PageView::setDocument(const QString &path, QTextDocument *doc) {
   reset();
   _doc = doc;
   if (_doc != 0) {
@@ -22,7 +23,7 @@ void PageView::setDocument(QTextDocument *doc) {
     _doc->setPageSize(pageRect.size());
     (void) _doc->documentLayout();
 
-    contentsChanged();
+    contentsChanged(QUrl::fromLocalFile(path));
   }
 }
 

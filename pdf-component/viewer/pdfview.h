@@ -6,6 +6,7 @@
 #include <poppler-qt4.h>
 
 class QWidget;
+class QUrl;
 
 /*
  * Knows how to scale a page to fit in a widget.  Currently, all
@@ -46,6 +47,7 @@ private:
   ScalingStrategy *scaler();
 
   Poppler::Document *doc;
+  QUrl _docBase;
   QPixmap _pageImage;
 
   int scalerIndex;
