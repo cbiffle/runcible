@@ -112,8 +112,8 @@ bool PdfView::setDocument(const QString &path) {
   if (doc) {
     doc->setRenderHint(Poppler::Document::Antialiasing);
     doc->setRenderHint(Poppler::Document::TextAntialiasing);
-    emit pageCountChanged(doc->numPages());
-    setupPage(0);
+    contentsChanged();
+    setupPage(pageIndex());
   }
 
   return doc;

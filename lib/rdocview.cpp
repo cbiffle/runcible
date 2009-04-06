@@ -133,3 +133,8 @@ int RDocView::pageIndex() {
 
 void RDocView::zoomIn() { }
 void RDocView::zoomOut() { }
+
+void RDocView::contentsChanged() {
+  emit pageCountChanged(pageCount());
+  update();
+}

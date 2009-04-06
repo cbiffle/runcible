@@ -35,6 +35,7 @@ protected:
   virtual int pageCount() = 0;
 
   void reset();
+  void contentsChanged();
   
 private:
   QRect _boxRect;

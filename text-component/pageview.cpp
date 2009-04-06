@@ -22,8 +22,7 @@ void PageView::setDocument(QTextDocument *doc) {
     _doc->setPageSize(pageRect.size());
     (void) _doc->documentLayout();
 
-    emit pageCountChanged(_doc->pageCount());
-    update();
+    contentsChanged();
   }
 }
 
