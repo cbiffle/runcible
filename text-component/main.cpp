@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
 
   QTextDocument doc;
   doc.setDefaultTextOption(QTextOption(Qt::AlignJustify));
+  doc.setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(filename).toString());
   if (suffix == "html") {
     doc.setHtml(text);
   } else {
