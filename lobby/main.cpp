@@ -8,6 +8,7 @@
 #include "footer.h"
 #include "keyguard.h"
 #include "coord-server.h"
+#include "batmon.h"
 
 class GuardHandler : public QWSServer::KeyboardFilter {
 public:
@@ -67,12 +68,15 @@ int main(int argc, char *argv[]) {
       );
 
   Spawner spawner;
+  BatteryMonitor batmon;
 
   QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(openId(Choice)));
 
   QObject::connect(QWSServer::instance(), SIGNAL(windowEvent(QWSWindow *, QWSServer::WindowEvent)),
       &statusBar, SLOT(windowEvent(QWSWindow *, QWSServer::WindowEvent)));
+
+  QObject::connect(&batmon, SIGNAL(chargeChanged(int)), &statusBar, SLOT(updateCharge(int)));
 
   window.setWindowTitle("Lobby");
   window.showMaximized();

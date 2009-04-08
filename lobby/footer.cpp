@@ -24,18 +24,19 @@ Footer::Footer(QWidget *parent)
   QFont msgFont;
   msgFont.setPointSize(8);
   msgFont.setWeight(QFont::Black);
+  setFont(msgFont);
 
   _timeline = new QLabel();
-  _timeline->setFont(msgFont);
-  //_timeline->setMaximumHeight(20);
 
   _message = new QLabel();
-  //_message->setMaximumHeight(20);
-  _message->setFont(msgFont);
+
+  _chargeWarning = new QLabel();
 
   layout->addWidget(_message, 0, 0);
-  layout->addWidget(_timeline, 0, 1);
+  layout->addWidget(_chargeWarning, 0, 1);
+  layout->addWidget(_timeline, 0, 2);
   layout->setColumnStretch(0, 1);
+  layout->setColumnStretch(1, 2);
   setLayout(layout);
 
   QPalette palette;
@@ -160,4 +161,12 @@ void Footer::received(const QString &message, const QByteArray &data) {
   }
 }
 
-
+void Footer::updateCharge(int pct) {
+  if (pct < 10) {
+    _chargeWarning->setText("Battery very low.");
+  } else if (pct < 20) {
+    _chargeWarning->setText("Battery low.");
+  } else {
+    _chargeWarning->setText("");
+  }
+}

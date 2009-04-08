@@ -36,6 +36,8 @@ public slots:
   void showMessage(int winId, const QString &message);
   void clearMessage(int winId);
 
+  void updateCharge(int pct);
+
   void windowEvent(QWSWindow *window, QWSServer::WindowEvent eventType);
 
 
@@ -47,6 +49,7 @@ private:
   bool _updateScheduled;
 
   QLabel *_timeline;
+  QLabel *_chargeWarning;
   QLabel *_message;
   int _currentWinId;
 
