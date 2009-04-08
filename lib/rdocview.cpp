@@ -4,6 +4,7 @@
 #include <QPaintEvent>
 #include <QKeyEvent>
 #include <QUrl>
+#include <QSettings>
 
 RDocView::RDocView(QWidget *parent)
     : QWidget(parent),
@@ -113,6 +114,9 @@ void RDocView::goToPage(int page) {
     _pageIndex = qBound(0, page, pageCount() - 1);
     emit pageChanged(_pageIndex);
     update();
+
+    QSettings s("runcible", "viewer");
+    s.setValue("lastpos/" + _docBase.toString(), _pageIndex);
   }
 }
 void RDocView::pageUp() {
@@ -138,5 +142,12 @@ void RDocView::zoomOut() { }
 void RDocView::contentsChanged(const QUrl &docBase) {
   _docBase = docBase;
   emit pageCountChanged(pageCount());
-  update();
+
+  QSettings s("runcible", "viewer");
+  int page = s.value("lastpos/" + docBase.toString(), 0).toInt();
+  if (page != 0) {
+    goToPage(page);
+  } else {
+    update();
+  }
 }
