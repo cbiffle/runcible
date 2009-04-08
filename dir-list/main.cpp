@@ -6,7 +6,6 @@
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  app.setFont(QFont("Liberation Serif", 12));
 
   QString path;
   if (argc > 1) {
