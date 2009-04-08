@@ -7,6 +7,8 @@
 #include <QKeyEvent>
 #include <QDebug>
 #include <QUrl>
+#include <QSettings>
+#include <QVariant>
 
 PageView::PageView(QWidget *parent)
     : RDocView(parent),
@@ -60,6 +62,11 @@ int PageView::pageCount() {
   return _doc->pageCount();
 }
 
+static void saveFontSize(int pts) {
+  QSettings s("runcible", "text-component");
+  s.setValue("font-size", QVariant(pts));
+}
+
 void PageView::zoomIn() {
   if (_doc == 0) return;
 
@@ -68,6 +75,8 @@ void PageView::zoomIn() {
   _doc->setDefaultFont(font);
   emit pageCountChanged(pageCount());
   update();
+
+  saveFontSize(font.pointSize());
 }
 
 void PageView::zoomOut() {
@@ -78,4 +87,6 @@ void PageView::zoomOut() {
   _doc->setDefaultFont(font);
   emit pageCountChanged(pageCount());
   update();
+
+  saveFontSize(font.pointSize());
 }
