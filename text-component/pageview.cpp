@@ -21,6 +21,11 @@ void PageView::setDocument(const QString &path, QTextDocument *doc) {
   reset();
   _doc = doc;
   if (_doc != 0) {
+    QSettings s("runcible", "text-component");
+    int ptSize = s.value("font-size", 12).toInt();
+    QFont font(_doc->defaultFont());
+    font.setPointSize(ptSize);
+    _doc->setDefaultFont(font);
     QRectF pageRect(0, 0, width(), height());
     _doc->setPageSize(pageRect.size());
     (void) _doc->documentLayout();
