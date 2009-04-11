@@ -39,6 +39,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&display, SIGNAL(pageCountChanged(int)), &window, SLOT(showTimeline(int)));
   QObject::connect(&display, SIGNAL(pageChanged(int)), &window, SLOT(updateTimeline(int)));
 
+  window.showMaximized();
+
   QTextDocument doc;
   doc.setDefaultTextOption(QTextOption(Qt::AlignJustify));
   doc.setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(filename).toString());
@@ -55,7 +57,6 @@ int main(int argc, char *argv[]) {
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
   window.showMessage(doc.metaInformation(QTextDocument::DocumentTitle));
-  window.showMaximized();
 
   return app.exec();
 }

@@ -26,8 +26,7 @@ void PageView::setDocument(const QString &path, QTextDocument *doc) {
     QFont font(_doc->defaultFont());
     font.setPointSize(ptSize);
     _doc->setDefaultFont(font);
-    QRectF pageRect(0, 0, width(), height());
-    _doc->setPageSize(pageRect.size());
+    _doc->setPageSize(size());
     (void) _doc->documentLayout();
 
     contentsChanged(QUrl::fromLocalFile(path));
@@ -57,8 +56,10 @@ void PageView::resizeEvent(QResizeEvent *event) {
   RDocView::resizeEvent(event);
 
   if (_doc != 0) {
-    _doc->setPageSize(size());
-    emit pageCountChanged(_doc->pageCount());
+    if (_doc->pageSize() != size()) {
+      _doc->setPageSize(size());
+      emit pageCountChanged(_doc->pageCount());
+    }
   }
 }
 
