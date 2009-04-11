@@ -55,11 +55,11 @@ void KeypadInputMethod::preedit(const QString &str) {
 }
 
 bool KeypadInputMethod::filter(int unicode, int keycode, int modifiers, bool isPress, bool autoRepeat) {
-  if (!isPress) return QWSInputMethod::filter(unicode, keycode, modifiers, isPress, autoRepeat);
+  if (!isPress) return false;
 
   switch (_state) {
     case UNFOCUSED:
-      return QWSInputMethod::filter(unicode, keycode, modifiers, isPress, autoRepeat);
+      return false;
 
     case COMPOSING:
       if (isLetterKey(keycode)) {
@@ -101,16 +101,17 @@ bool KeypadInputMethod::filter(int unicode, int keycode, int modifiers, bool isP
       } else if (keycode == Qt::Key_9) {
         return true;
       } else if (keycode == Qt::Key_Escape) {
-        if (!(modifiers && Qt::AltModifier)) {
-          QWSServer::sendKeyEvent(8, Qt::Key_Backspace, 0, true, false);
-          return true;
+        if (modifiers & Qt::AltModifier) {
+          return false;
         }
+        QWSServer::sendKeyEvent(8, Qt::Key_Backspace, 0, true, false);
+        return true;
       } else if (keycode == Qt::Key_Return) {
         return false; // handle event elsewhere.
       }
       break;
   }
-  return QWSInputMethod::filter(unicode, keycode, modifiers, isPress, autoRepeat);
+  return false;
 }
 
 void KeypadInputMethod::queryResponse(int property, const QVariant &result) {
