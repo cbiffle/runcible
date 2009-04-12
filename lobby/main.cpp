@@ -9,6 +9,7 @@
 #include "keyguard.h"
 #include "coord-server.h"
 #include "batmon.h"
+#include "keypadim.h"
 
 class GuardHandler : public QWSServer::KeyboardFilter {
 public:
@@ -56,6 +57,7 @@ int main(int argc, char *argv[]) {
 
   GuardHandler filter;
   QWSServer::addKeyboardFilter(&filter);
+  QWSServer::setCurrentInputMethod(new KeypadInputMethod);
 
   RWindow window;
   window.showMessage("Lobby");
