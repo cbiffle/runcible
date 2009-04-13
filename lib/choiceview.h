@@ -23,8 +23,8 @@ class Choice {
     QString _id, _title;
     QStringList _params;
 };
-
 bool operator<(Choice a, Choice b);
+
 
 /*
  * A specialized view that presents a menu of ten Choice items
@@ -36,9 +36,8 @@ class ChoiceView : public QWidget {
 
 public:
   ChoiceView(QWidget *parent = 0);
-  ~ChoiceView();
+  virtual ~ChoiceView();
 
-  virtual void keyPressEvent(QKeyEvent *);
 
 public slots:
   void choose(int);
@@ -53,6 +52,7 @@ signals:
   void choiceMade(const Choice);
 
 protected:
+  virtual void keyPressEvent(QKeyEvent *);
   virtual void paintEvent(QPaintEvent *event);
 
 private:
