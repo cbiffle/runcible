@@ -1,3 +1,5 @@
+include( ../../common.pri )
+
 QT += xml
 CONFIG += link_pkgconfig
 HEADERS = tocman.h

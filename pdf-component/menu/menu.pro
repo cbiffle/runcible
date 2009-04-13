@@ -1,3 +1,5 @@
+include( ../../common.pri )
+
 SOURCES = main.cpp
 
 LIBS += ../../bin/libruncible.so -L/usr/lib

@@ -1,9 +1,11 @@
+include( ../../common.pri )
+
 QT += xml
 CONFIG += link_pkgconfig
 HEADERS = pdfview.h 
 SOURCES = pdfview.cpp main.cpp
 
-PKGCONFIG += poppler-qt4
+PKGCONFIG += poppler poppler-qt4
 LIBS += ../../bin/libruncible.so
 INCLUDEPATH += ../../lib
 
