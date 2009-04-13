@@ -42,7 +42,6 @@ public:
 
 public slots:
   void choose(int);
-  void goBack();
   void setChoices(QList<Choice>);
   void pageUp();
   void pageDown();
@@ -52,7 +51,6 @@ signals:
   void switchedToPage(int);
 
   void choiceMade(const Choice);
-  void back();
 
 protected:
   virtual void paintEvent(QPaintEvent *event);

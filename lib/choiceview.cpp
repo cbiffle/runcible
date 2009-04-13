@@ -112,9 +112,6 @@ void ChoiceView::keyPressEvent(QKeyEvent *event) {
       choose(chosen);
       return;
     }
-  } else if (event->key() == Qt::Key_Escape) {
-    goBack();
-    return;
   } else if (event->key() == Qt::Key_Down) {
     pageDown();
     return;
@@ -127,10 +124,6 @@ void ChoiceView::keyPressEvent(QKeyEvent *event) {
 
 void ChoiceView::choose(int chosen) {
   emit choiceMade(_choices[chosen]);
-}
-
-void ChoiceView::goBack() {
-  emit back();
 }
 
 void ChoiceView::setChoices(const QList<Choice> choices) {
