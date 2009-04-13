@@ -126,7 +126,7 @@ void ChoiceView::choose(int chosen) {
   emit choiceMade(_choices[chosen]);
 }
 
-void ChoiceView::setChoices(const QList<Choice> choices) {
+void ChoiceView::setChoices(const QList<Choice> &choices) {
   _choices = choices;
   if (_offset >= _choices.size()) {
     // Integer division floors here.

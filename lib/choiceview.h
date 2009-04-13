@@ -41,7 +41,7 @@ public:
 
 public slots:
   void choose(int);
-  void setChoices(QList<Choice>);
+  void setChoices(const QList<Choice> &);
   void pageUp();
   void pageDown();
 

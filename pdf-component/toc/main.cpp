@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &tocman, SLOT(activate(Choice)));
-  QObject::connect(&tocman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
+  QObject::connect(&tocman, SIGNAL(contentsChanged(const QList<Choice> &)), &view, SLOT(setChoices(const QList<Choice> &)));
 
   tocman.refresh();
   window.showMaximized();

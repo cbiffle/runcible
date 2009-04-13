@@ -19,7 +19,7 @@ public slots:
   void activate(Choice);
 
 signals:
-  void contentsChanged(QList<Choice>);
+  void contentsChanged(const QList<Choice> &);
 
 private:
   QString _path;

@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &dirman, SLOT(activate(Choice)));
-  QObject::connect(&dirman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
+  QObject::connect(&dirman, SIGNAL(contentsChanged(const QList<Choice> &)), &view, SLOT(setChoices(const QList<Choice> &)));
 
   QObject::connect(&view, SIGNAL(morePages(int)), &window, SLOT(showTimeline(int)));
   QObject::connect(&view, SIGNAL(switchedToPage(int)), &window, SLOT(updateTimeline(int)));
