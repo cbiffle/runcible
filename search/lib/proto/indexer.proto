@@ -1,0 +1,24 @@
+package runcible.search;
+
+// An item to index.
+// The useful size of the plain_contents field is limited to
+// somewhat less than available RAM.  As such, large documents
+// (above a few megabytes) should be split up.
+//
+// The easiest way to do this is by fragment identifier --
+// page, HTML anchor, chapter identifier, etc.  The search
+// tools will automatically fold multiple results that share
+// a base URL.
+message IndexItem {
+  // The complete URL of the item being described.
+  required string url = 1;
+
+  // A human-readable title or description of the item.
+  required string title = 2;
+
+  // The text contents of the document, to index.  This will be
+  // fed to a trivial whitespace-based stopwording text analyzer,
+  // and should be preprocessed with this in mind -- for example,
+  // HTML/XML tags that should not be indexed should be removed.
+  required string plain_contents = 3;
+}
