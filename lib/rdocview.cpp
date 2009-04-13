@@ -54,7 +54,7 @@ void RDocView::keyPressEvent(QKeyEvent *event) {
       pageDown();
       return;
 
-    case Qt::Key_Escape:
+    case Qt::Key_Back:
       if (_pageNumberEntry > 0) {
         if (event->modifiers() & Qt::AltModifier) {
           _pageNumberEntry = 0;

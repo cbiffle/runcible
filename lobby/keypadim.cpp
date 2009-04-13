@@ -79,7 +79,7 @@ bool KeypadInputMethod::filter(int unicode, int keycode, int modifiers, bool isP
         commit();
         commit(" ");
         return true;
-      } else if (keycode == Qt::Key_Escape) {
+      } else if (keycode == Qt::Key_Back) {
         commit("");
         return true;
       } else if (keycode == Qt::Key_Return) {
@@ -100,7 +100,7 @@ bool KeypadInputMethod::filter(int unicode, int keycode, int modifiers, bool isP
         return true;
       } else if (keycode == Qt::Key_9) {
         return true;
-      } else if (keycode == Qt::Key_Escape) {
+      } else if (keycode == Qt::Key_Back) {
         if (modifiers & Qt::AltModifier) {
           return false;
         }
