@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
   Spawner spawner;
 
-  QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
+  QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(runChoice(Choice)));
 
   window.showMaximized();

@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
   window.showMessage("Contents of " + QFileInfo(url.path()).fileName());
 
-  QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
+  QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &tocman, SLOT(activate(Choice)));
   QObject::connect(&tocman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));
 

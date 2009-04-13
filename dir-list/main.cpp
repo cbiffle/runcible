@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   RWindow window;
   ChoiceView view;
 
-  QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
+  QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
 
   QObject::connect(&view, SIGNAL(choiceMade(Choice)), &dirman, SLOT(activate(Choice)));
   QObject::connect(&dirman, SIGNAL(contentsChanged(QList<Choice>)), &view, SLOT(setChoices(QList<Choice>)));

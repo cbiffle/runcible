@@ -65,14 +65,14 @@ int main(int argc, char *argv[]) {
   ChoiceView view(&window);
   window.layout()->addWidget(&view);
   view.setChoices(QList<Choice>()
-      << Choice(QObject::tr("Browse"), browseUrl.toString())
+      << Choice(QObject::tr("Browse"), "runcible-dir-list", QStringList() << browsePath)
       );
 
   Spawner spawner;
   BatteryMonitor batmon;
 
-  QObject::connect(&view, SIGNAL(back()), &app, SLOT(quit()));
-  QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(openId(Choice)));
+  QObject::connect(&window, SIGNAL(back()), &app, SLOT(quit()));
+  QObject::connect(&view, SIGNAL(choiceMade(Choice)), &spawner, SLOT(runChoice(Choice)));
 
   QObject::connect(QWSServer::instance(), SIGNAL(windowEvent(QWSWindow *, QWSServer::WindowEvent)),
       &statusBar, SLOT(windowEvent(QWSWindow *, QWSServer::WindowEvent)));
