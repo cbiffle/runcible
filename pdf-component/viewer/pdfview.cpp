@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QDebug>
+#include <QTimer>
 #include <QUrl>
 #include <stdio.h>
 
@@ -50,7 +51,9 @@ public:
 };
 
 PdfView::PdfView(QWidget *parent) 
-    : RDocView(parent) {
+    : RDocView(parent),
+      _imagedPage(0),
+      _renderScheduled(false) {
   doc = 0;
   connect(this, SIGNAL(pageChanged(int)), this, SLOT(setupPage(int)));
 
@@ -74,6 +77,7 @@ ScalingStrategy *PdfView::scaler() {
 void PdfView::zoomIn() {
   if (scalerIndex < scalingStrategies.size() - 1) {
     scalerIndex++;
+    _pageImage = QPixmap();
     setupPage(pageIndex());
     update();
   }
@@ -82,6 +86,7 @@ void PdfView::zoomIn() {
 void PdfView::zoomOut() {
   if (scalerIndex > 0) {
     scalerIndex--;
+    _pageImage = QPixmap();
     setupPage(pageIndex());
     update();
   }
@@ -89,14 +94,48 @@ void PdfView::zoomOut() {
 
 void PdfView::resizeEvent(QResizeEvent *event) {
   RDocView::resizeEvent(event);
+  _pageImage = QPixmap();
   setupPage(pageIndex());
 }
 
 void PdfView::setupPage(int newPage) {
-  Poppler::Page *page = doc->page(newPage);
+  qDebug() << "setupPage" << newPage;
+  if (_imagedPage == newPage && !_pageImage.isNull()) return;
+
+  if (_imagedPage == (newPage - 1) && !_nextImage.isNull()) {
+    qDebug() << "Flipping to _nextImage.";
+    _pageImage = _nextImage;
+    _nextImage = QPixmap();
+  } else {
+    qDebug() << "Re-rendering: _imagedPage =" << _imagedPage;
+    _pageImage = QPixmap();
+    _nextImage = QPixmap();
+  }
+
+  if (_pageImage.isNull()) {
+    qDebug() << "Rendering current page image.";
+    Poppler::Page *page = doc->page(newPage);
+    QImage image = scaler()->scaleAndRender(page, this);
+
+    _pageImage = QPixmap::fromImage(image);
+    _imagedPage = newPage;
+  }
+
+  if (_nextImage.isNull() && (newPage + 1) < pageCount()) {
+    if (!_renderScheduled) {
+      _renderScheduled = true;
+      QTimer::singleShot(0, this, SLOT(scheduleRender()));
+    }
+  }
+}
+
+void PdfView::scheduleRender() {
+  _renderScheduled = false;
+  qDebug() << "Rendering next page image.";
+  Poppler::Page *page = doc->page(_imagedPage + 1);
   QImage image = scaler()->scaleAndRender(page, this);
 
-  _pageImage = QPixmap::fromImage(image);
+  _nextImage = QPixmap::fromImage(image);
 }
 
 void PdfView::renderPage(int page) {
@@ -114,6 +153,7 @@ bool PdfView::setDocument(const QString &path) {
     doc->setRenderHint(Poppler::Document::Antialiasing);
     doc->setRenderHint(Poppler::Document::TextAntialiasing);
     contentsChanged(QUrl::fromLocalFile(path));
+    _pageImage = QPixmap();
     setupPage(pageIndex());
   }
 

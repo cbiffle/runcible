@@ -39,6 +39,9 @@ public slots:
   virtual void zoomOut();
 
   void setupPage(int);
+
+protected slots:
+  void scheduleRender();
   
 protected:
   virtual void renderPage(int page);
@@ -48,7 +51,11 @@ private:
 
   Poppler::Document *doc;
   QUrl _docBase;
+
   QPixmap _pageImage;
+  QPixmap _nextImage;
+  int _imagedPage;
+  bool _renderScheduled;
 
   int scalerIndex;
   QList<ScalingStrategy *> scalingStrategies;
